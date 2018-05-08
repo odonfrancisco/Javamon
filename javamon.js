@@ -5,48 +5,63 @@ let ctx = canvas.getContext('2d');
 // Predefined Javamon to be picked from for use in battle
 let javamon = [
     {name: 'Bulbasaur',
+        health: 100,
         type: 'grass',
         sprite: 'src',},
     {name: 'Geodude',
+        health: 100,
         type: 'rock',
         sprite: 'src',},
     {name: 'Entei',
+        health: 100,
         type: 'fire',
         sprite: 'src',},
     {name: 'Piplup',
+        health: 100,
         type: 'water',
         sprite: 'src',},
     {name: 'Nidoran',
+        health: 100,
         type: 'poison',
         sprite: 'src',},
     {name: 'Meowth',
+        health: 100,
         type: 'normal',
         sprite: 'src',},
     {name: 'Abra',
+        health: 100,
         type: 'psychic',
         sprite: 'src',},
     {name: 'Poliwag',
+        health: 100,
         type: 'water',
         sprite: 'src',},
     {name: 'Ponyta',
+        health: 100,
         type: 'fire',
         sprite: 'src',},
     {name: 'Onyx',
+        health: 100,
         type: 'rock',
         sprite: 'src',},
     {name: 'Kangaskhan',
+        health: 100,
         type: 'normal',
         sprite: 'src'},
     {name: 'Eevee',
+        health: 100,
         type: 'normal',
         sprite: 'src',},
     {name: 'Porygon',
+        health: 100,
         type: 'normal',
         sprite: 'src',},
     {name: 'Sudowoodo',
+        health: 100,
         type: 'rock',
         sprite: 'src',},
     {name: 'Garchomp',
+        health: 100,
         type: 'dragon',
         sprite: 'src',},
 ]
@@ -156,6 +171,10 @@ let moveSet = [
 window.onload = function java(){
     pickJavamon();
     assignMoves();
+    currentJavamon();
+}
+document.getElementById('fight').onclick = function(){
+    Fight();
 }
 
 function pickJavamon(){
@@ -193,7 +212,7 @@ function assignMoves(){
                 console.log('')
         }})
     })
-    
+    console.log('Second Player\'s Javamon')
     player2Javamon.forEach(function(e){
         moveSet.forEach(function(i){
             if (i.type === e.type){
@@ -220,4 +239,60 @@ function assignMoves(){
                 console.log('')
         }})
     })
+}
+
+var current1Javamon;
+var current2Javamon;
+var randomNum = Math.floor(Math.random()*4)
+
+function currentJavamon(){
+    current1Javamon=player1Javamon[randomNum];
+    current2Javamon=player2Javamon[randomNum];
+}
+
+function Fight(){
+    if (current1Javamon)var move1 = current1Javamon.moves[Math.floor(Math.random()*4)];
+    if (current2Javamon)var move2 = current2Javamon.moves[Math.floor(Math.random()*4)];
+    if (move1) var move1Speed = move1.speed;
+    if (move2) var move2Speed = move2.speed
+    if (move1Speed > move2Speed){
+        current2Javamon.health -= move1.power/3;
+        current1Javamon.health -= move2.power/3;
+    // } else if(move1Speed < move2Speed) {
+    //     current1Javamon.health -= move2.power/3;
+    //     current2Javamon.health -= move1.power/3;
+    } else {
+        current1Javamon.health -= move2.power/3;
+        current2Javamon.health -= move1.power/3;
+    }
+    if (current1Javamon.health <= 0){
+        console.log(current1Javamon.name + ' has fainted!');
+        player1Javamon.splice(player1Javamon.indexOf(current1Javamon), 1);
+        // console.log(player1Javamon[Math.floor(Math.random()*player1Javamon.length)])
+        current1Javamon = player1Javamon[Math.floor(Math.random()*player1Javamon.length)];
+        if (player1Javamon.length!=0){
+            console.log(current1Javamon.name + ' to the rescue!');
+        }
+    }
+    if (current2Javamon.health <= 0){
+        console.log(current2Javamon.name + ' has fainted!');
+        player2Javamon.splice(player2Javamon.indexOf(current2Javamon), 1);
+        current2Javamon = player2Javamon[Math.floor(Math.random()*player2Javamon.length)];
+        if (player2Javamon.length!=0){
+            console.log(current2Javamon.name + ' to the rescue!');  
+        }
+    }
+    if (player1Javamon.length === 0){
+        console.log('Player 1 has no more Javamon!')
+    }
+    if (player2Javamon.length === 0){
+        console.log('Player 2 has no more Javamon!')
+    }
+    if (player1Javamon.length != 0){
+        console.log('Player 1\'s health reduced to ' + current1Javamon.health);
+    }
+    if (player2Javamon.length != 0){
+        console.log('Player 2\'s health reduced to ' + current2Javamon.health);
+    }
+    console.log('')
 }
