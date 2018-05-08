@@ -1,3 +1,7 @@
+// Sets the canvas and canvas context
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
+
 // Predefined Javamon to be picked from for use in battle
 let javamon = [
     {name: 'Bulbasaur',
@@ -48,7 +52,11 @@ let javamon = [
 ]
 
 // Defines array for players to create their own Javamon
-let userJavamon= []
+let userJavamon= [];
+
+// Defines array for player's Javamon to be stored
+let player1Javamon=[];
+let player2Javamon = [];
 
 // Defines moves to be chosen from according to type when Javamon are picked
 // pp is the amount of times a move may be used, ranges from 4-8 according to amount of power
@@ -144,3 +152,72 @@ let moveSet = [
             {name: 'Draco Meteor', power: 75, pp: 7, speed: 4},
         ]},
 ]
+
+window.onload = function java(){
+    pickJavamon();
+    assignMoves();
+}
+
+function pickJavamon(){
+    for (var i=0; i<4; i++){
+        player1Javamon.push(javamon[Math.floor(Math.random()*javamon.length)]);
+        player2Javamon.push(javamon[Math.floor(Math.random()*javamon.length)]);
+        // console.log(player1Javamon[i]);
+        // console.log(player2Javamon[i]);
+    }
+}
+function assignMoves(){
+    player1Javamon.forEach(function(e){
+        moveSet.forEach(function(i){
+            if (i.type === e.type){
+                e.moves = [];
+                
+                numR = [];
+                numbers = [0,1,2,3,4,5,6,7];
+                for (r=0; r<4; r++){
+                    for (j=8; j>4; j--){
+                        var randomNum =  Math.floor(Math.random()*j)
+                    }
+                    
+                    pushNum = numbers[randomNum];
+                    numR.push(pushNum);
+                    numbers.splice(randomNum, 1)
+                }
+                
+                // console.log(numR)
+                e.moves.push(i.moves[numR[0]], i.moves[numR[1]], i.moves[numR[2]], i.moves[numR[3]])
+                console.log(e)
+                e.moves.forEach(function(e){
+                    console.log(e)
+                })
+                console.log('')
+        }})
+    })
+    
+    player2Javamon.forEach(function(e){
+        moveSet.forEach(function(i){
+            if (i.type === e.type){
+                e.moves = [];
+                
+                numR = [];
+                numbers = [0,1,2,3,4,5,6,7];
+                for (r=0; r<4; r++){
+                    for (j=8; j>4; j--){
+                        var randomNum =  Math.floor(Math.random()*j)
+                    }
+                    
+                    pushNum = numbers[randomNum];
+                    numR.push(pushNum);
+                    numbers.splice(randomNum, 1)
+                }
+                
+                // console.log(numR)
+                e.moves.push(i.moves[numR[0]], i.moves[numR[1]], i.moves[numR[2]], i.moves[numR[3]])
+                console.log(e)
+                e.moves.forEach(function(e){
+                    console.log(e)
+                })
+                console.log('')
+        }})
+    })
+}
