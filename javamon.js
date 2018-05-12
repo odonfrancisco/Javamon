@@ -1,70 +1,43 @@
-// Sets the canvas and canvas context
+// Sets the canvas, canvas context and body element
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
+let body = document.getElementsByTagName('body')[0];
 
-// Predefined Javamon to be picked from for use in battle
-let javamon = [
-    {name: 'Bulbasaur',
-        health: 100,
-        type: 'grass',
-        sprite: 'src',},
-    {name: 'Geodude',
-        health: 100,
-        type: 'rock',
-        sprite: 'src',},
-    {name: 'Entei',
-        health: 100,
-        type: 'fire',
-        sprite: 'src',},
-    {name: 'Piplup',
-        health: 100,
-        type: 'water',
-        sprite: 'src',},
-    {name: 'Nidoran',
-        health: 100,
-        type: 'poison',
-        sprite: 'src',},
-    {name: 'Meowth',
-        health: 100,
-        type: 'normal',
-        sprite: 'src',},
-    {name: 'Abra',
-        health: 100,
-        type: 'psychic',
-        sprite: 'src',},
-    {name: 'Poliwag',
-        health: 100,
-        type: 'water',
-        sprite: 'src',},
-    {name: 'Ponyta',
-        health: 100,
-        type: 'fire',
-        sprite: 'src',},
-    {name: 'Onyx',
-        health: 100,
-        type: 'rock',
-        sprite: 'src',},
-    {name: 'Kangaskhan',
-        health: 100,
-        type: 'normal',
-        sprite: 'src'},
-    {name: 'Eevee',
-        health: 100,
-        type: 'normal',
-        sprite: 'src',},
-    {name: 'Porygon',
-        health: 100,
-        type: 'normal',
-        sprite: 'src',},
-    {name: 'Sudowoodo',
-        health: 100,
-        type: 'rock',
-        sprite: 'src',},
-    {name: 'Garchomp',
-        health: 100,
-        type: 'dragon',
-        sprite: 'src',},
-]
+// Array to automatically store all javamon
+var javamon = [];
+
+// Function which will automatically store any Javamon made into array
+function pushJavamon(all){
+    javamon.push(all)
+}
+
+var Javamon = function(name, type, sprite) {
+    this.name = name;
+    this.health = 100;
+    this.type = type;
+    this.sprite = sprite;
+    pushJavamon(this);
+}
+
+// var gastly = new Javamon('Gastly', "ghost", "src" );
+var bulbasaur = new Javamon('Bulbasaur', 'grass', 'src');
+var geodude = new Javamon('Geodude', 'rock', 'src');
+var entei = new Javamon('Entei', 'fire', 'src');
+var piplup = new Javamon('Piplup', 'water', 'src');
+var nidoran = new Javamon('Nidoran', 'poison', 'src');
+var meowth = new Javamon('Meowth', 'normal', 'src');
+var abra = new Javamon('Abra', 'psychic', 'src');
+var poliwag = new Javamon('Poliwag', 'water', 'src');
+var ponyta = new Javamon('Ponyta', 'fire', 'src');
+var onyx = new Javamon('Onyx', 'rock', 'src');
+var kangaskhan = new Javamon('Kangaskhan', 'normal', 'src');
+var eevee = new Javamon('Eevee', 'normal', 'src');
+var porygon = new Javamon('Porygon', 'normal', 'src');
+var sudowoodo = new Javamon('Sudowoodo', 'rock', 'src');
+var garchomp = new Javamon('Garchomp', 'dragon', 'src');
+// var chreast = new Javamon('Chreast', 'normal', 'src');
+// var gengar = new Javamon('Gengar', 'ghost', 'src');
+
 
 // Defines array for players to create their own Javamon
 let userJavamon= [];
@@ -73,121 +46,186 @@ let userJavamon= [];
 let player1Javamon=[];
 let player2Javamon = [];
 
-// Defines moves to be chosen from according to type when Javamon are picked
-// pp is the amount of times a move may be used, ranges from 4-8 according to amount of power
-// Speed determines which move will go first in a turn. The higher the number, the quicker it is
-// Range for speed is from 1-5 
-let moveSet = [
-    {type: 'grass',
-        moves: [
-            {name: 'Razor Leaf', power: 55, pp: 8, speed: 5},
-            {name: 'Leaf Tornado', power: 65, pp: 8, speed: 5},
-            {name: 'Frenzy Plant', power: 120, pp: 5, speed: 2},
-            {name: 'Leaf Blade', power: 90, pp: 6, speed: 3},
-            {name: 'Leaf Storm', power: 110, pp: 5, speed: 2},
-            {name: 'Needle Arm', power: 60, pp: 8, speed: 5},
-            {name: 'Power Whip', power: 100, pp: 6, speed: 3},
-            {name: 'Solar Beam', power: 110, pp: 5, speed: 2},
-        ]},
-    {type: 'rock',
-        moves: [
-            {name: 'Rollout', power: 40, pp: 8, speed: 5},
-            {name: 'Smack Down', power: 55, pp: 8, speed: 5},
-            {name: 'Head Smash', power: 130, pp: 4, speed: 1},
-            {name: 'Rock Tomb', power: 70, pp: 7, speed: 4},
-            {name: 'Rock Slide', power: 80, pp: 7, speed: 4},
-            {name: 'Diamond Storm', power: 110, pp: 5, speed: 2},
-            {name: 'Rock Blast', power: 90, pp: 6, speed: 3},
-            {name: 'Ancient Power', power: 99, pp: 6, speed: 3},
-        ]},
-    {type: 'fire',
-        moves: [
-            {name: 'Blast Burn', power: 130, pp: 4, speed: 1},
-            {name: 'Ember', power: 55, pp: 8, speed: 5},
-            {name: 'Fire Blast', power: 110, pp: 5, speed: 2},
-            {name: 'Fire Punch', power: 80, pp: 7, speed: 4},
-            {name: 'Inferno', power: 110, pp: 5, speed: 2},
-            {name: 'Mystical Fire', power: 68, pp: 8, speed: 5},
-            {name: 'Flamethrower', power: 90, pp: 6, speed: 3},
-            {name: 'Incinerate', power: 70, pp: 7, speed: 4},
-        ]},
-    {type: 'water',
-        moves: [
-            {name: 'Surf', power: 90, pp: 5, speed: 3},
-            {name: 'Water Gun', power: 50, pp: 8, speed: 5},
-            {name: 'Waterfall', power: 80, pp: 7, speed: 4},
-            {name: 'Dive', power: 90, pp: 6, speed: 3},
-            {name: 'Hydro Pump', power: 120, pp: 5, speed: 2},
-            {name: 'Brine', power: 100, pp: 6, speed: 3},
-            {name: 'Hydro Cannon', power: 130, pp: 4, speed: 1},
-            {name: 'Origin Pule', power: 70, pp: 7, speed: 4},
-        ]},
-    {type: 'poison',
-        moves: [
-            {name: 'Poison Gas', power: 70, pp: 7, speed: 4},
-            {name: 'Poison Sting', power: 80, pp: 7, speed: 4},
-            {name: 'Sludge', power: 50, pp: 8, speed: 5},
-            {name: 'Poison Fang', power: 110, pp: 5, speed: 2},
-            {name: 'Acid', power: 90, pp: 6, speed: 3},
-            {name: 'Belch', power: 130, pp: 4, speed: 1},
-            {name: 'Acid Spray', power: 80, pp: 7, speed: 4},
-            {name: 'Venom Drench', power: 100, pp: 5, speed: 2},
-        ]},
-    {type: 'normal',
-        moves: [
-            {name: 'Uproar', power: 90, pp: 6, speed: 3},
-            {name: 'Take Down', power: 100, pp: 6, speed: 2},
-            {name: 'Tackle', power: 70, pp: 7, speed: 4},
-            {name: 'Strength', power: 80, pp: 6, speed: 4},
-            {name: 'Slash', power: 60, pp: 8, speed: 5},
-            {name: 'Mega Kick', power: 120, pp: 5, speed: 2},
-            {name: 'Mega Punch', power: 130, pp: 4, speed: 1},
-            {name: 'Fury Swipe', power: 70, pp: 7, speed: 4},
-        ]},
-    {type: 'psychic',
-        moves: [
-            {name: 'Zen Headbutt', power: 110, pp: 5, speed: 2},
-            {name: 'Psystrike', power: 90, pp: 6, speed: 3},
-            {name: 'Pyscho Cut', power: 70, pp: 7, speed: 4},
-            {name: 'Psybeam', power: 130, pp: 4, speed: 1},
-            {name: 'Extrasensory', power: 80, pp: 7, speed: 4},
-            {name: 'Confusion', power: 60, pp: 8, speed: 5},
-            {name: 'Dream Eater', power: 90, pp: 6, speed: 3},
-            {name: 'Future Sight', power: 120, pp: 5, speed: 2},
-        ]},
-    {type: 'dragon',
-        moves: [
-            {name: 'Dragon Breath', power: 70, pp: 7, speed: 4},
-            {name: 'Dragon Pulse', power: 90, pp: 6, speed: 3},
-            {name: 'Dragon Claw', power: 100, pp: 6, speed: 3},
-            {name: 'Dragon Tail', power: 60, pp: 8, speed: 5},
-            {name: 'Twister', power: 80, pp: 7, speed: 4},
-            {name: 'Roar of Time', power: 130, pp: 4, speed: 1},
-            {name: 'Outrage', power: 120, pp: 5, speed: 2},
-            {name: 'Draco Meteor', power: 75, pp: 7, speed: 4},
-        ]},
-]
+
+// This array will store all the moves
+var moves = []
+
+function moveMoves(all){
+    moves.push(all)
+}
+
+function Moveset(type){
+    this.type = type;
+    this.moves = [];
+    moveMoves(this);
+}
+
+function Move(name, power, pp, speed){
+    this.name = name;
+    this.power = power;
+    this.pp = pp;
+    this.speed = speed;
+}
+
+// Each of these create a new 
+var grass = new Moveset('grass');
+grass.moves.push(new Move('Razor Leaf', 55, 8, 5));
+grass.moves.push(new Move('Leaf Tornado', 65, 8, 5));
+grass.moves.push(new Move('Frenzy Plant', 120, 5, 2));
+grass.moves.push(new Move('Leaf Blade', 90, 6, 3));
+grass.moves.push(new Move('Leaf Storm', 110, 5, 2));
+grass.moves.push(new Move('Needle Arm', 60, 8, 5));
+grass.moves.push(new Move('Power Whip', 100, 6, 3));
+grass.moves.push(new Move('Solar Beam', 110, 5, 2));
+
+var rock = new Moveset('rock');
+rock.moves.push(new Move('Rollout', 40, 8, 5));
+rock.moves.push(new Move('Smack Down', 55, 8, 5));
+rock.moves.push(new Move('Head Smash', 130, 4, 1));
+rock.moves.push(new Move('Rock Tomb', 70, 7, 4));
+rock.moves.push(new Move('Rock Slide', 80, 7, 4));
+rock.moves.push(new Move('Diamond Storm', 110, 5, 2));
+rock.moves.push(new Move('Rock Blast', 90, 6, 3));
+rock.moves.push(new Move('Ancient Power', 99, 6, 3));
+
+var fire = new Moveset('fire');
+fire.moves.push(new Move('Blast Burn', 130, 4, 1));
+fire.moves.push(new Move('Ember', 55, 8, 5));
+fire.moves.push(new Move('Fire Blast', 110, 5, 2));
+fire.moves.push(new Move('Fire Punch', 80, 7, 4));
+fire.moves.push(new Move('Inferno', 110, 5, 2));
+fire.moves.push(new Move('Mystical Fire', 68, 8, 5));
+fire.moves.push(new Move('Flamethrower', 90, 6, 3));
+fire.moves.push(new Move('Incinerate', 70, 7, 4));
+
+var water = new Moveset('water');
+water.moves.push(new Move('Surf', 90, 5, 3));
+water.moves.push(new Move('Water Gun', 50, 8, 5));
+water.moves.push(new Move('Waterfall', 80, 7, 4));
+water.moves.push(new Move('Dive', 90, 6, 3));
+water.moves.push(new Move('Hydro Pump', 120, 5, 2));
+water.moves.push(new Move('Brine', 100, 6, 3));
+water.moves.push(new Move('Hydro Cannon', 130, 4, 1));
+water.moves.push(new Move('Origin Pulse', 70, 7, 4));
+
+var poison = new Moveset('poison');
+poison.moves.push(new Move('Poison Gas', 70, 7, 4));
+poison.moves.push(new Move('Poison Sting', 80, 7, 4));
+poison.moves.push(new Move('Sludge', 50, 8, 5));
+poison.moves.push(new Move('Poison Fang', 110, 5, 4));
+poison.moves.push(new Move('Acid', 90, 6, 3));
+poison.moves.push(new Move('Belch', 130, 4, 1));
+poison.moves.push(new Move('Acid Spray', 80, 7, 4));
+poison.moves.push(new Move('Venom Drench', 100, 5, 2));
+
+
+var normal = new Moveset('normal');
+normal.moves.push(new Move('Uproar', 90, 6, 3));
+normal.moves.push(new Move('Take Down', 100, 6, 2));
+normal.moves.push(new Move('Tackle', 70, 7, 4));
+normal.moves.push(new Move('Strength', 80, 6, 4));
+normal.moves.push(new Move('Slash', 60, 8, 5));
+normal.moves.push(new Move('Mega Kick', 120, 5, 2));
+normal.moves.push(new Move('Mega Punch', 130, 4, 1));
+normal.moves.push(new Move('Fury Swipe', 70, 7, 4));
+
+var psychic = new Moveset('psychic');
+psychic.moves.push(new Move('Zen Headbutt', 110, 5, 2));
+psychic.moves.push(new Move('Psytrike', 90, 6, 3));
+psychic.moves.push(new Move('Psycho Cut', 70, 7, 4));
+psychic.moves.push(new Move('Psybeam', 130, 4, 1));
+psychic.moves.push(new Move('Extrasensory', 80, 7, 4));
+psychic.moves.push(new Move('Confusion', 60, 8, 5));
+psychic.moves.push(new Move('Dream Eater', 90, 6, 3));
+psychic.moves.push(new Move('Future Sight', 120, 5, 2));
+
+var dragon = new Moveset('dragon');
+dragon.moves.push(new Move('Dragon Breath', 70, 7, 4));
+dragon.moves.push(new Move('Dragon Pulse', 90, 7, 4));
+dragon.moves.push(new Move('Dragon Claw', 100, 6, 3));
+dragon.moves.push(new Move('Dragon Tail', 60, 8, 5));
+dragon.moves.push(new Move('Twister', 80, 7, 4));
+dragon.moves.push(new Move('Roar of Time', 130, 4, 1));
+dragon.moves.push(new Move('Outrage', 120, 5, 2));
+dragon.moves.push(new Move('Draco Meteor', 75, 7, 4));
 
 window.onload = function java(){
-    pickJavamon();
-    assignMoves();
-    currentJavamon();
+    // pickJavamon();
+    // assignMoves();
+    // currentJavamon();
+    createButton();
+    clickEm();
 }
+
 document.getElementById('fight').onclick = function(){
     Fight();
 }
 
-function pickJavamon(){
-    for (var i=0; i<4; i++){
-        player1Javamon.push(javamon[Math.floor(Math.random()*javamon.length)]);
-        player2Javamon.push(javamon[Math.floor(Math.random()*javamon.length)]);
-        // console.log(player1Javamon[i]);
-        // console.log(player2Javamon[i]);
+// Assigns players' Javamon random moves and sets the Javamon they're going 
+// to start with randomly
+document.getElementById('next').onclick = function(){
+    currentJavamon();
+    assignMoves();
+    fightScreen();
+}
+
+// This functions creates a button and displays it for each Javamon
+function createButton(){
+    javamon.forEach(function(e, i){
+        newButton = document.createElement('button');
+        newButton.id = e.name;
+        newButton.className = 'javamon-button';
+        newButton.innerHTML = e.name;
+        body.insertBefore(newButton, canvas);
+        console.log(document.getElementsByTagName('button')[i]);
+    })
+}
+
+// Adds Javamon to each players' array (P1 first then P2)
+let javamonButton = document.getElementsByClassName('javamon-button');
+
+function clickEm(){
+    for (var i = 0; i< javamonButton.length; i++){
+        let button = javamonButton[i];
+        button.onclick = function(){
+        pickJavamon(button.id);
+        }
     }
 }
+
+// Function which ensures P1 goes first in choosing Javamon and then P2
+function pickJavamon(e){
+    if (player1Javamon.length < 4){
+        javamon.forEach(function(i){
+            if (e === i.name){
+                player1Javamon.push(i)
+                console.log(player1Javamon)
+            }
+        })
+    } else if(player2Javamon.length < 4) {
+        javamon.forEach(function(i){
+            if (e === i.name){
+                player2Javamon.push(i)
+                console.log(player2Javamon)
+            }
+        })
+    }
+}
+
+// Randomly assigns Javamon to each party
+// function pickJavamon(){
+//     for (var i=0; i<4; i++){
+//         player1Javamon.push(javamon[Math.floor(Math.random()*javamon.length)]);
+//         player2Javamon.push(javamon[Math.floor(Math.random()*javamon.length)]);
+//         // console.log(player1Javamon[i]);
+//         // console.log(player2Javamon[i]);
+//     }
+// }
+
+// Randomly assigns respective moves to each Javamon
 function assignMoves(){
     player1Javamon.forEach(function(e){
-        moveSet.forEach(function(i){
+        moves.forEach(function(i){
             if (i.type === e.type){
                 e.moves = [];
                 
@@ -214,7 +252,7 @@ function assignMoves(){
     })
     console.log('Second Player\'s Javamon')
     player2Javamon.forEach(function(e){
-        moveSet.forEach(function(i){
+        moves.forEach(function(i){
             if (i.type === e.type){
                 e.moves = [];
                 
@@ -241,58 +279,143 @@ function assignMoves(){
     })
 }
 
+// Clears screen when press 'next' button and displays fight scene
+function fightScreen(){
+    for (var i = 0; i< javamonButton.length; i++){
+        javamonButton[i].className = 'javamon-button display-none';
+    }
+    let chooseMove1 = document.createElement('button');
+    let switchJavamon1 = document.createElement('button');
+    let runAway1 = document.createElement('button');
+
+    let chooseMove2 = document.createElement('button');
+    let switchJavamon2 = document.createElement('button');
+    let runAway2 = document.createElement('button');
+
+    if (player1Javamon.length === 4 ){
+        body.insertBefore(chooseMove1, canvas);
+        body.insertBefore(switchJavamon1, canvas);
+        body.insertBefore(runAway1, canvas);
+        chooseMove1.id = 'move1';
+        chooseMove1.innerHTML = 'Fight!';
+        chooseMove1.className = 'p1-button';
+        switchJavamon1.id = 'switch1';
+        switchJavamon1.innerHTML = 'Switch Javamon';
+        switchJavamon1.className = 'p1-button';
+        runAway1.id = 'run1';
+        runAway1.innerHTML = 'Run!';
+        runAway1.className = 'p1-button';
+        console.log(chooseMove1)
+    }
+    if (player1Javamon.length === 4){
+        body.insertBefore(chooseMove2, canvas);
+        body.insertBefore(switchJavamon2, canvas);
+        body.insertBefore(runAway2, canvas);
+        chooseMove2.id = 'move2';
+        chooseMove2.innerHTML = 'Fight!';
+        chooseMove2.className = 'p2-button';
+        switchJavamon2.id = 'switch2';
+        switchJavamon2.innerHTML = 'Switch Javamon';
+        switchJavamon2.className = 'p2-button';
+        runAway2.id = 'run2'
+        runAway2.innerHTML = 'Run!';
+        runAway2.className = 'p2-button';
+        console.log(chooseMove2)
+    }
+}
+
+// Create an if statement with OR which makes sure both players
+// Click their respective button before displaying what's next
+// I'm fucking loving this game so far, lets grind tomorrow
+
+// Variable where the current Javamon will be stored during each battle
 var current1Javamon;
 var current2Javamon;
 var randomNum = Math.floor(Math.random()*4)
 
+// Assigns an initial current Javamon to each player
 function currentJavamon(){
     current1Javamon=player1Javamon[randomNum];
     current2Javamon=player2Javamon[randomNum];
 }
 
+// Lol
 function Fight(){
     if (current1Javamon)var move1 = current1Javamon.moves[Math.floor(Math.random()*4)];
     if (current2Javamon)var move2 = current2Javamon.moves[Math.floor(Math.random()*4)];
     if (move1) var move1Speed = move1.speed;
     if (move2) var move2Speed = move2.speed
+    if (current1Javamon && current2Javamon){
     if (move1Speed > move2Speed){
         current2Javamon.health -= move1.power/3;
+        console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+        console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+        console.log('');
+        if (current2Javamon.health > 0){
         current1Javamon.health -= move2.power/3;
+        console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+        console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+        } else {
+            console.log(current2Javamon.name = ' has fainted!')
+        }
+        // console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+        // console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+        // console.log('')
+        // console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+        // console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
     // } else if(move1Speed < move2Speed) {
     //     current1Javamon.health -= move2.power/3;
     //     current2Javamon.health -= move1.power/3;
     } else {
         current1Javamon.health -= move2.power/3;
+        console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+        console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+        console.log('')
+        if (current1Javamon.health > 0){
         current2Javamon.health -= move1.power/3;
+        console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+        console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+        } else{
+            console.log(current1Javamon.name + ' has fainted!')
+        }
+        // console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+        // console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+        // console.log('')
+        // console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+        // console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
     }
     if (current1Javamon.health <= 0){
-        console.log(current1Javamon.name + ' has fainted!');
+        // console.log(current1Javamon.name + ' has fainted!');
         player1Javamon.splice(player1Javamon.indexOf(current1Javamon), 1);
         // console.log(player1Javamon[Math.floor(Math.random()*player1Javamon.length)])
         current1Javamon = player1Javamon[Math.floor(Math.random()*player1Javamon.length)];
         if (player1Javamon.length!=0){
             console.log(current1Javamon.name + ' to the rescue!');
+            console.log('')
         }
     }
     if (current2Javamon.health <= 0){
-        console.log(current2Javamon.name + ' has fainted!');
+        // console.log(current2Javamon.name + ' has fainted!');
         player2Javamon.splice(player2Javamon.indexOf(current2Javamon), 1);
         current2Javamon = player2Javamon[Math.floor(Math.random()*player2Javamon.length)];
         if (player2Javamon.length!=0){
             console.log(current2Javamon.name + ' to the rescue!');  
         }
-    }
+    }}
     if (player1Javamon.length === 0){
         console.log('Player 1 has no more Javamon!')
+        console.log('Player 2 has won!')
     }
     if (player2Javamon.length === 0){
         console.log('Player 2 has no more Javamon!')
+        console.log('Player 1 has won!')
     }
-    if (player1Javamon.length != 0){
-        console.log('Player 1\'s health reduced to ' + current1Javamon.health);
-    }
-    if (player2Javamon.length != 0){
-        console.log('Player 2\'s health reduced to ' + current2Javamon.health);
-    }
+    // if (player1Javamon.length != 0){
+    //     console.log('Player 1\'s ' + current1Javamon.name + ' health reduced to ' + current1Javamon.health);
+    //     console.log(move1)
+    // }
+    // if (player2Javamon.length != 0){
+    //     console.log('Player 2\'s ' + current2Javamon.name + ' health reduced to ' + current2Javamon.health);
+    // }
     console.log('')
 }
