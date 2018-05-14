@@ -18,15 +18,28 @@ display: none;
 }
 
 .p1-button{
-    margin: 10px;
+    margin: 10px 1vw 5px;
+    width: 20vw;
 }
 
 /* Weird that this doesn't work*/
-.p2-button:first-of-type{
+/* .p2-button:first-of-type{
     margin: 50px;
-}
-#move2{
+} */
+/* #move2{
     margin-left: 150px;
-}
+} */
 .p2-button{
-    margin: 10px;}
+    margin: 10px 1vw 5px;
+    width: 20vw;
+}
+
+#column-div{
+    /* columns: 30vw 2; */
+    column-count: 2;
+    /* column-gap: 50px; */
+    /* column-fill: balance; */
+}
+/* #column1{
+    column-width: 250px;
+} */

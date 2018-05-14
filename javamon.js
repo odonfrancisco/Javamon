@@ -2,6 +2,10 @@
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 let body = document.getElementsByTagName('body')[0];
+let afterCanvas = document.getElementById('after-canvas')
+let columnDiv = document.getElementById('column-div');
+let column1 = document.getElementById('column1');
+let column2 = document.getElementById('column2');
 
 // Array to automatically store all javamon
 var javamon = [];
@@ -164,10 +168,17 @@ document.getElementById('fight').onclick = function(){
 // Assigns players' Javamon random moves and sets the Javamon they're going 
 // to start with randomly
 document.getElementById('next').onclick = function(){
+    if (player1Javamon.length === 4 && player2Javamon.length === 4){
     currentJavamon();
     assignMoves();
     fightScreen();
+    deleteNext('');
+    battleRound();
+    createNext(1, '');
+    pickEm();
+    }
 }
+
 
 // This functions creates a button and displays it for each Javamon
 function createButton(){
@@ -176,7 +187,7 @@ function createButton(){
         newButton.id = e.name;
         newButton.className = 'javamon-button';
         newButton.innerHTML = e.name;
-        body.insertBefore(newButton, canvas);
+        body.insertBefore(newButton, afterCanvas);
         console.log(document.getElementsByTagName('button')[i]);
     })
 }
@@ -184,6 +195,7 @@ function createButton(){
 // Adds Javamon to each players' array (P1 first then P2)
 let javamonButton = document.getElementsByClassName('javamon-button');
 
+// Declares when Javamon button gets clicked, it gets pushed to respective player's party
 function clickEm(){
     for (var i = 0; i< javamonButton.length; i++){
         let button = javamonButton[i];
@@ -284,54 +296,267 @@ function fightScreen(){
     for (var i = 0; i< javamonButton.length; i++){
         javamonButton[i].className = 'javamon-button display-none';
     }
-    let chooseMove1 = document.createElement('button');
-    let switchJavamon1 = document.createElement('button');
-    let runAway1 = document.createElement('button');
+    this.chooseMove1 = document.createElement('button');
+    this.switchJavamon1 = document.createElement('button');
+    this.runAway1 = document.createElement('button');
 
-    let chooseMove2 = document.createElement('button');
-    let switchJavamon2 = document.createElement('button');
-    let runAway2 = document.createElement('button');
+    this.chooseMove2 = document.createElement('button');
+    this.switchJavamon2 = document.createElement('button');
+    this.runAway2 = document.createElement('button');
 
-    if (player1Javamon.length === 4 ){
-        body.insertBefore(chooseMove1, canvas);
-        body.insertBefore(switchJavamon1, canvas);
-        body.insertBefore(runAway1, canvas);
-        chooseMove1.id = 'move1';
-        chooseMove1.innerHTML = 'Fight!';
-        chooseMove1.className = 'p1-button';
-        switchJavamon1.id = 'switch1';
-        switchJavamon1.innerHTML = 'Switch Javamon';
-        switchJavamon1.className = 'p1-button';
-        runAway1.id = 'run1';
-        runAway1.innerHTML = 'Run!';
-        runAway1.className = 'p1-button';
-        console.log(chooseMove1)
-    }
-    if (player1Javamon.length === 4){
-        body.insertBefore(chooseMove2, canvas);
-        body.insertBefore(switchJavamon2, canvas);
-        body.insertBefore(runAway2, canvas);
-        chooseMove2.id = 'move2';
-        chooseMove2.innerHTML = 'Fight!';
-        chooseMove2.className = 'p2-button';
-        switchJavamon2.id = 'switch2';
-        switchJavamon2.innerHTML = 'Switch Javamon';
-        switchJavamon2.className = 'p2-button';
-        runAway2.id = 'run2'
-        runAway2.innerHTML = 'Run!';
-        runAway2.className = 'p2-button';
-        console.log(chooseMove2)
-    }
+    // Creates Player 1's buttons
+    column1.appendChild(chooseMove1);
+    column1.appendChild(switchJavamon1);
+    column1.appendChild(runAway1);
+    chooseMove1.id = 'move1';
+    chooseMove1.innerHTML = 'Fight!';
+    chooseMove1.className = 'p1-button';
+    switchJavamon1.id = 'switch1';
+    switchJavamon1.innerHTML = 'Switch Javamon';
+    switchJavamon1.className = 'p1-button';
+    runAway1.id = 'run1';
+    runAway1.innerHTML = 'Run!';
+    runAway1.className = 'p1-button';
+
+    // Creates Player 2's buttons
+    column2.appendChild(chooseMove2);
+    column2.appendChild(switchJavamon2);
+    column2.appendChild(runAway2);
+    chooseMove2.id = 'move2';
+    chooseMove2.innerHTML = 'Fight!';
+    chooseMove2.className = 'p2-button';
+    switchJavamon2.id = 'switch2';
+    switchJavamon2.innerHTML = 'Switch Javamon';
+    switchJavamon2.className = 'p2-button';
+    runAway2.id = 'run2'
+    runAway2.innerHTML = 'Run!';
+    runAway2.className = 'p2-button';
+}
+
+function deleteNext(num){
+    let next = document.getElementById('next' + num);
+    next.className = 'display-none';
+}
+
+// Creates 'Next' button for following screen
+function createNext(num, before){
+    div = document.createElement('div');
+    next = document.createElement('button');
+    next.id = 'next' + num;
+    next.innerHTML = 'Next';
+    div.appendChild(next);
+    body.insertBefore(div, document.getElementById('next' + before).parentNode);
 }
 
 // Create an if statement with OR which makes sure both players
 // Click their respective button before displaying what's next
 // I'm fucking loving this game so far, lets grind tomorrow
+// let clickMove1 = chooseMove1.onclick
+
+p1Click = [];
+p2Click = [];
+
+// Function which waits for both players to pick their action
+function battleRound(){
+    chooseAction1();
+    chooseAction2();
+}
+
+// Funcion for Player one to choose what they're going to do
+function chooseAction1(){
+    chooseMove1.onclick = function(e){
+        if(p1Click.length === 0){
+            p1Click.push(e.path[0].attributes[0].value);
+            console.log(p1Click)
+        }
+        else {
+            p1Click.pop();
+            p1Click.push(e.path[0].attributes[0].value);
+            console.log(p1Click);
+        }
+    }
+    switchJavamon1.onclick = function(e){
+        if(p1Click.length === 0){
+            p1Click.push(e.path[0].attributes[0].value);
+            console.log(p1Click)
+        }
+        else {
+            p1Click.pop();
+            p1Click.push(e.path[0].attributes[0].value);
+            console.log(p1Click);
+        }
+    }
+    runAway1.onclick = function(e){
+        if(p1Click.length === 0){
+            p1Click.push(e.path[0].attributes[0].value);
+            console.log(p1Click)
+        }
+        else {
+            p1Click.pop();
+            p1Click.push(e.path[0].attributes[0].value);
+            console.log(p1Click);
+        }
+    }
+}
+
+// Function for Player 2 to pick their action
+function chooseAction2(){
+    chooseMove2.onclick = function(e){
+        if(p2Click.length === 0){
+            p2Click.push(e.path[0].attributes[0].value);
+            console.log(p2Click)
+        }
+        else {
+            p2Click.pop();
+            p2Click.push(e.path[0].attributes[0].value);
+            console.log(p2Click);
+        }
+    }
+    switchJavamon2.onclick = function(e){
+        if(p2Click.length === 0){
+            p2Click.push(e.path[0].attributes[0].value);
+            console.log(p2Click)
+        }
+        else {
+            p2Click.pop();
+            p2Click.push(e.path[0].attributes[0].value);
+            console.log(p2Click);
+        }
+    }
+    runAway2.onclick = function(e){
+        if(p2Click.length === 0){
+            p2Click.push(e.path[0].attributes[0].value);
+            console.log(p2Click)
+        }
+        else {
+            p2Click.pop();
+            p2Click.push(e.path[0].attributes[0].value);
+            console.log(p2Click);
+        }
+    }
+}
+
+// Function for when Next is clicked on the 'fight switch run' screen
+function pickEm(){
+    document.getElementById('next1').onclick = function(){
+        if (p1Click.length ===1 && p2Click.length === 1){
+            deleteOptions();
+            deleteNext(1);
+            // createNext(2, 1);
+            displayFightButton();
+            pickedInput();
+        }
+    }
+}
+
+// Deletes 'Fight Switch Run' and 'Next' buttons once next is clicked
+function deleteOptions(){
+    p1Buttons = document.getElementsByClassName('p1-button');
+    p2Buttons = document.getElementsByClassName('p2-button');
+    next = document.getElementById('next1');
+    for (var i=0; i<p1Buttons.length; i++){
+        p1Buttons[i].className = 'p1-button display-none';
+        p2Buttons[i].className = 'p2-button display-none';
+        // console.log(p1Buttons[i])
+    }
+}
+
+// Determines which button is clicked for each player and then displays respective screen
+// according to what player picks
+function pickedInput(){
+    if (p1Click.length === 1 && p2Click.length === 1){
+        switch (p1Click[0]){
+            case 'move1': pickFight(current1Javamon, 1); break;
+            case 'switch1': switchJavamon(player1Javamon, 1); break;
+            case 'run1': runAway('player1'); break;
+        };
+        switch (p2Click[0]){
+            case 'move2': pickFight(current2Javamon, 2); break;
+            case 'switch2': switchJavamon(player2Javamon, 2); break;
+            case 'run2': runAway('player2'); break;
+        }
+    }
+}
+
+let move1 = document.getElementsByClassName('move1');
+let move2 = document.getElementsByClassName('move2');
+
+// Function for when a player clicks on Fight! button
+function pickFight(currentJavamon, num){
+    createMoveButtons(currentJavamon, num);
+    pickMove(move1, 1);
+    pickMove(move2, 2);
+}
+
+//Function for when player clicks on 'Switch Javamon'
+function switchJavamon(party, num){
+    displayParty(party, num);
+}
+
+// Function which creates the new buttons when Fight! is clicked
+function createMoveButtons(current, num){
+    for (i=0; i<current.moves.length; i++){
+        // console.log(current.moves[i])
+        let button = document.createElement('button');
+        let move = current.moves[i].name;
+        button.innerHTML = move;
+        button.id = move;
+        switch (num){
+            case 1: button.className = 'p1-button move1'; column1.appendChild(button); break;
+            case 2: button.className = 'p2-button move2'; column2.appendChild(button); break;
+        }
+        // console.log(move)
+    }
+}
+
+// Function which identifies what button was pressed
+function pickMove(move, num){
+    for (var i = 0; i< move.length; i++){
+        let button = move[i];
+        let current;
+        switch (num){
+            case 1: current = current1Javamon; break;
+            case 2: current = current2Javamon; break;
+        }
+        // Pushes move pressed into variable which will be used for fight
+        button.onclick = function(e){
+            current.moves.forEach(function(i){
+                if (e.path[0].id === i.name && e.path[0].className === 'p1-button move1'){
+                    player1Move = i;
+                    // console.log(i)
+                }
+                else if (e.path[0].id === i.name && e.path[0].className === 'p2-button move2'){
+                    player2Move = i;
+                }
+            })
+            // console.log(current.moves)
+        // console.log(e.path[0].className);
+        }
+    }
+}
+
+// Function which displays party's Javamon when click 'Switch Javamon'
+function displayParty(party, num){
+    for (i=0; i<party.length; i++){
+        // console.log(party.moves[i])
+        let button = document.createElement('button');
+        let name = party[i].name;
+        button.innerHTML = name;
+        button.id = name;
+        switch (num){
+            case 1: button.className = 'p1-button party1'; column1.appendChild(button); player1Move = ''; break;
+            case 2: button.className = 'p2-button party2'; column2.appendChild(button); player2Move = ''; break;
+        }
+        console.log(name)
+    }
+}
 
 // Variable where the current Javamon will be stored during each battle
 var current1Javamon;
 var current2Javamon;
 var randomNum = Math.floor(Math.random()*4)
+var player1Move;
+var player2Move;
 
 // Assigns an initial current Javamon to each player
 function currentJavamon(){
@@ -339,69 +564,76 @@ function currentJavamon(){
     current2Javamon=player2Javamon[randomNum];
 }
 
+function displayFightButton(){
+    document.getElementById('fight').className = '';
+}
+
 // Lol
 function Fight(){
-    if (current1Javamon)var move1 = current1Javamon.moves[Math.floor(Math.random()*4)];
-    if (current2Javamon)var move2 = current2Javamon.moves[Math.floor(Math.random()*4)];
+    if (player1Move)var move1 = player1Move;
+    if (player2Move)var move2 = player2Move;
+    // if (current1Javamon)var move1 = current1Javamon.moves[Math.floor(Math.random()*4)];
+    // if (current2Javamon)var move2 = current2Javamon.moves[Math.floor(Math.random()*4)];
     if (move1) var move1Speed = move1.speed;
     if (move2) var move2Speed = move2.speed
-    if (current1Javamon && current2Javamon){
-    if (move1Speed > move2Speed){
-        current2Javamon.health -= move1.power/3;
-        console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
-        console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
-        console.log('');
-        if (current2Javamon.health > 0){
-        current1Javamon.health -= move2.power/3;
-        console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
-        console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+    if (move1 && move2){
+        if (move1Speed > move2Speed){
+            current2Javamon.health -= move1.power/3;
+            console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+            console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+            console.log('');
+            if (current2Javamon.health > 0){
+            current1Javamon.health -= move2.power/3;
+            console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+            console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+            } else {
+                console.log(current2Javamon.name = ' has fainted!')
+            }
+            // console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+            // console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+            // console.log('')
+            // console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+            // console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+        // } else if(move1Speed < move2Speed) {
+        //     current1Javamon.health -= move2.power/3;
+        //     current2Javamon.health -= move1.power/3;
         } else {
-            console.log(current2Javamon.name = ' has fainted!')
-        }
-        // console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
-        // console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
-        // console.log('')
-        // console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
-        // console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
-    // } else if(move1Speed < move2Speed) {
-    //     current1Javamon.health -= move2.power/3;
-    //     current2Javamon.health -= move1.power/3;
-    } else {
-        current1Javamon.health -= move2.power/3;
-        console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
-        console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
-        console.log('')
-        if (current1Javamon.health > 0){
-        current2Javamon.health -= move1.power/3;
-        console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
-        console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
-        } else{
-            console.log(current1Javamon.name + ' has fainted!')
-        }
-        // console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
-        // console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
-        // console.log('')
-        // console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
-        // console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
-    }
-    if (current1Javamon.health <= 0){
-        // console.log(current1Javamon.name + ' has fainted!');
-        player1Javamon.splice(player1Javamon.indexOf(current1Javamon), 1);
-        // console.log(player1Javamon[Math.floor(Math.random()*player1Javamon.length)])
-        current1Javamon = player1Javamon[Math.floor(Math.random()*player1Javamon.length)];
-        if (player1Javamon.length!=0){
-            console.log(current1Javamon.name + ' to the rescue!');
+            current1Javamon.health -= move2.power/3;
+            console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+            console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
             console.log('')
+            if (current1Javamon.health > 0){
+            current2Javamon.health -= move1.power/3;
+            console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+            console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+            } else{
+                console.log(current1Javamon.name + ' has fainted!')
+            }
+            // console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+            // console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+            // console.log('')
+            // console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+            // console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+        }
+        if (current1Javamon.health <= 0){
+            // console.log(current1Javamon.name + ' has fainted!');
+            player1Javamon.splice(player1Javamon.indexOf(current1Javamon), 1);
+            // console.log(player1Javamon[Math.floor(Math.random()*player1Javamon.length)])
+            current1Javamon = player1Javamon[Math.floor(Math.random()*player1Javamon.length)];
+            if (player1Javamon.length!=0){
+                console.log(current1Javamon.name + ' to the rescue!');
+                console.log('')
+            }
+        }
+        if (current2Javamon.health <= 0){
+            // console.log(current2Javamon.name + ' has fainted!');
+            player2Javamon.splice(player2Javamon.indexOf(current2Javamon), 1);
+            current2Javamon = player2Javamon[Math.floor(Math.random()*player2Javamon.length)];
+            if (player2Javamon.length!=0){
+                console.log(current2Javamon.name + ' to the rescue!');  
+            }
         }
     }
-    if (current2Javamon.health <= 0){
-        // console.log(current2Javamon.name + ' has fainted!');
-        player2Javamon.splice(player2Javamon.indexOf(current2Javamon), 1);
-        current2Javamon = player2Javamon[Math.floor(Math.random()*player2Javamon.length)];
-        if (player2Javamon.length!=0){
-            console.log(current2Javamon.name + ' to the rescue!');  
-        }
-    }}
     if (player1Javamon.length === 0){
         console.log('Player 1 has no more Javamon!')
         console.log('Player 2 has won!')
@@ -418,4 +650,32 @@ function Fight(){
     //     console.log('Player 2\'s ' + current2Javamon.name + ' health reduced to ' + current2Javamon.health);
     // }
     console.log('')
+    resetOptions();
+    deleteMoves();
+}
+
+// This will put options back into place, hide fight button and show next button
+function resetOptions(){
+    let options = document.getElementsByClassName('p1-button display-none');
+    for (var i=0; i<3; i++){
+        options[0].className = 'p1-button';
+    }
+    let options2 = document.getElementsByClassName('p2-button display-none');
+    for (var i=0; i<3; i++){
+        options2[0].className = 'p2-button';
+    }
+    document.getElementById('fight').className = 'display-none';
+    document.getElementById('next1').className = '';
+    p1Click = [];
+    p2Click = [];
+}
+
+// This will delete the moves from screen
+function deleteMoves(){
+    let moves = document.getElementsByClassName('move1');
+    let moves2 = document.getElementsByClassName('move2');
+    for (var i=0; i<4; i++){
+        moves[0].parentNode.removeChild(moves[0]);
+        moves2[0].parentNode.removeChild(moves2[0])
+    }
 }
