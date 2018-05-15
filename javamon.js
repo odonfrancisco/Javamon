@@ -24,8 +24,8 @@ var Javamon = function(name, type, sprite) {
 }
 
 // var gastly = new Javamon('Gastly', "ghost", "src" );
-var bulbasaur = new Javamon('Bulbasaur', 'grass', 'src');
-var geodude = new Javamon('Geodude', 'rock', 'src');
+var bulbasaur = new Javamon('Bulbasaur', 'grass', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/bulbasaur.gif');
+var geodude = new Javamon('Geodude', 'rock', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/geodude.gif');
 var entei = new Javamon('Entei', 'fire', 'src');
 var piplup = new Javamon('Piplup', 'water', 'src');
 var nidoran = new Javamon('Nidoran', 'poison', 'src');
@@ -159,12 +159,21 @@ window.onload = function java(){
     // currentJavamon();
     createButton();
     clickEm();
+    document.createTextNode(bulbasaur.sprite);
+    a = document.body.appendChild(document.createElement('a'));
+    img = document.createElement('img');
+    img.src = bulbasaur.sprite;
+    a.appendChild(img);
+
+    b = document.body.appendChild(document.createElement('a'));
+    idg = document.createElement('img');
+    idg.src = geodude.sprite;
+    a.appendChild(idg);
 }
 
-let fight;
 document.getElementById('fight').onclick = function(){
+    if ((player1Move && player2Move) || (current1 && player2Move) || (player1Move && current2))
     Fight();
-    fight = 3;
 }
 
 // Assigns players' Javamon random moves and sets the Javamon they're going 
@@ -333,6 +342,9 @@ function fightScreen(){
     runAway2.id = 'run2'
     runAway2.innerHTML = 'Run!';
     runAway2.className = 'p2-button';
+
+    // Displays Canvas
+    canvas.className = ''
 }
 
 function deleteNext(num){
@@ -488,6 +500,7 @@ function pickFight(currentJavamon, num){
     createMoveButtons(currentJavamon, num);
     pickMove(move1, 1);
     pickMove(move2, 2);
+    // clearMoves();
 }
 
 //Function for when player clicks on 'Switch Javamon'
@@ -539,6 +552,12 @@ function pickMove(move, num){
     }
 }
 
+// Function will clear current move after each fight
+function clearMoves(){
+    player1Move = null;
+    player2Move = null;
+}
+
 // Function which displays party's Javamon when click 'Switch Javamon'
 function displayParty(party, num){
     for (i=0; i<party.length; i++){
@@ -548,8 +567,8 @@ function displayParty(party, num){
         button.innerHTML = name;
         button.id = name;
         switch (num){
-            case 1: button.className = 'p1-button party1'; column1.appendChild(button); player1Move = null; break;
-            case 2: button.className = 'p2-button party2'; column2.appendChild(button); player2Move = null; break;
+            case 1: button.className = 'p1-button party1'; column1.appendChild(button); break;
+            case 2: button.className = 'p2-button party2'; column2.appendChild(button); break;
         }
         console.log(name)
     }
@@ -558,13 +577,16 @@ function displayParty(party, num){
 party1 = document.getElementsByClassName('party1');
 party2 = document.getElementsByClassName('party2');
 
+let current1;
+let current2;
+
 // Function which determines which Javamon in party was chosen
 function pickCurrent(pickedJavamon, num){
     for (var i = 0; i< pickedJavamon.length; i++){
         let button = pickedJavamon[i];
         let player;
-        this.current1;
-        this.current2;
+        // this.current1;
+        // this.current2;
         switch (num){
             case 1: player = player1Javamon; break;
             case 2: player = player2Javamon; break;
@@ -720,6 +742,8 @@ function Fight(){
     deleteMoves();
     if (current1)current1Javamon = current1;
     if (current2)current2Javamon = current2;
+    if (player1Move) player1Move = null;
+    if (player2Move) player2Move = null;
 }
 
 // This will put options back into place, hide fight button and show next button

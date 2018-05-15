@@ -1,5 +1,7 @@
 #canvas{
-display: none;
+    background-color: red;
+    width: 95vw; 
+    height: 40vw;
 }
 
 .javamon-button:first-of-type{
