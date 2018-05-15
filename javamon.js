@@ -161,8 +161,10 @@ window.onload = function java(){
     clickEm();
 }
 
+let fight;
 document.getElementById('fight').onclick = function(){
     Fight();
+    fight = 3;
 }
 
 // Assigns players' Javamon random moves and sets the Javamon they're going 
@@ -491,6 +493,8 @@ function pickFight(currentJavamon, num){
 //Function for when player clicks on 'Switch Javamon'
 function switchJavamon(party, num){
     displayParty(party, num);
+    pickCurrent(party1, 1);
+    pickCurrent(party2, 2);
 }
 
 // Function which creates the new buttons when Fight! is clicked
@@ -509,7 +513,7 @@ function createMoveButtons(current, num){
     }
 }
 
-// Function which identifies what button was pressed
+// Function which identifies what button was pressed for battle
 function pickMove(move, num){
     for (var i = 0; i< move.length; i++){
         let button = move[i];
@@ -544,12 +548,44 @@ function displayParty(party, num){
         button.innerHTML = name;
         button.id = name;
         switch (num){
-            case 1: button.className = 'p1-button party1'; column1.appendChild(button); player1Move = ''; break;
-            case 2: button.className = 'p2-button party2'; column2.appendChild(button); player2Move = ''; break;
+            case 1: button.className = 'p1-button party1'; column1.appendChild(button); player1Move = null; break;
+            case 2: button.className = 'p2-button party2'; column2.appendChild(button); player2Move = null; break;
         }
         console.log(name)
     }
 }
+
+party1 = document.getElementsByClassName('party1');
+party2 = document.getElementsByClassName('party2');
+
+// Function which determines which Javamon in party was chosen
+function pickCurrent(pickedJavamon, num){
+    for (var i = 0; i< pickedJavamon.length; i++){
+        let button = pickedJavamon[i];
+        let player;
+        this.current1;
+        this.current2;
+        switch (num){
+            case 1: player = player1Javamon; break;
+            case 2: player = player2Javamon; break;
+        }
+        // Pushes move pressed into variable which will be used for fight
+        button.onclick = function(e){
+            player.forEach(function(i){
+                if (e.path[0].id === i.name && e.path[0].className === 'p1-button party1'){
+                    current1 = i;
+                    // console.log(i)
+                }
+                else if (e.path[0].id === i.name && e.path[0].className === 'p2-button party2'){
+                    current2 = i;
+                }
+            })
+        //     console.log(current.moves)
+        // console.log(e.path[0].id);
+        }
+    }
+}
+
 
 // Variable where the current Javamon will be stored during each battle
 var current1Javamon;
@@ -570,8 +606,9 @@ function displayFightButton(){
 
 // Lol
 function Fight(){
-    if (player1Move)var move1 = player1Move;
-    if (player2Move)var move2 = player2Move;
+    Fight.called = true;
+    var move1 = player1Move;
+    var move2 = player2Move;
     // if (current1Javamon)var move1 = current1Javamon.moves[Math.floor(Math.random()*4)];
     // if (current2Javamon)var move2 = current2Javamon.moves[Math.floor(Math.random()*4)];
     if (move1) var move1Speed = move1.speed;
@@ -634,6 +671,35 @@ function Fight(){
             }
         }
     }
+    if (move2 === null && move1){
+        current2Javamon.health -= move1.power/3;
+            console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+            console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+            console.log('');
+        if (current2Javamon.health <= 0){
+            console.log(current2Javamon.name + ' has fainted!');
+            player2Javamon.splice(player2Javamon.indexOf(current2Javamon), 1);
+            current2Javamon = player2Javamon[Math.floor(Math.random()*player2Javamon.length)];
+            if (player2Javamon.length!=0){
+                console.log(current2Javamon.name + ' to the rescue!');  
+            }
+        }
+    }
+    if (move1 === null && move2){
+        current1Javamon.health -= move2.power/3;
+            console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+            console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+            console.log('')
+        if (current1Javamon.health <= 0){
+            console.log(current1Javamon.name + ' has fainted!');
+            player1Javamon.splice(player1Javamon.indexOf(current1Javamon), 1);
+            current1Javamon = player1Javamon[Math.floor(Math.random()*player1Javamon.length)];
+            if (player1Javamon.length!=0){
+                console.log(current1Javamon.name + ' to the rescue!');
+                console.log('')
+            }
+        }
+    }
     if (player1Javamon.length === 0){
         console.log('Player 1 has no more Javamon!')
         console.log('Player 2 has won!')
@@ -652,16 +718,16 @@ function Fight(){
     console.log('')
     resetOptions();
     deleteMoves();
+    if (current1)current1Javamon = current1;
+    if (current2)current2Javamon = current2;
 }
 
 // This will put options back into place, hide fight button and show next button
 function resetOptions(){
     let options = document.getElementsByClassName('p1-button display-none');
-    for (var i=0; i<3; i++){
-        options[0].className = 'p1-button';
-    }
     let options2 = document.getElementsByClassName('p2-button display-none');
     for (var i=0; i<3; i++){
+        options[0].className = 'p1-button';
         options2[0].className = 'p2-button';
     }
     document.getElementById('fight').className = 'display-none';
@@ -672,10 +738,10 @@ function resetOptions(){
 
 // This will delete the moves from screen
 function deleteMoves(){
-    let moves = document.getElementsByClassName('move1');
-    let moves2 = document.getElementsByClassName('move2');
     for (var i=0; i<4; i++){
-        moves[0].parentNode.removeChild(moves[0]);
-        moves2[0].parentNode.removeChild(moves2[0])
+        if (move1.length > 0)move1[0].parentNode.removeChild(move1[0]);
+        if (move2.length > 0)move2[0].parentNode.removeChild(move2[0]);
+        if (party1.length > 0)party1[0].parentNode.removeChild(party1[0]);
+        if (party2.length > 0)party2[0].parentNode.removeChild(party2[0]);
     }
 }
