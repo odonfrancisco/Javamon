@@ -19,11 +19,9 @@
     display: none;
 }
 
-.p1-button{
-    margin: 10px 1vw 5px;
-    width: 20vw;
+#next, #next1{
+    margin-top: 50px;
 }
-
 /* Weird that this doesn't work*/
 /* .p2-button:first-of-type{
     margin: 50px;
@@ -31,9 +29,11 @@
 /* #move2{
     margin-left: 150px;
 } */
-.p2-button{
+.p2-button, .p1-button{
     margin: 10px 1vw 5px;
     width: 20vw;
+    /* height: 6vw; */
+    font-size: large;
 }
 
 #column-div{
@@ -45,3 +45,34 @@
 /* #column1{
     column-width: 250px;
 } */
+#fight-scene{
+    column-count: 2;
+    /* border: 2px solid black; */
+}
+
+
+#health1{
+    background-color: blue;
+    /* width: 42vw; */
+    height: 20px;
+    margin: 0 0 -4px 1vw;
+    /* border-top-right-radius: 45px;
+    border-bottom-right-radius: 45px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px; */
+}
+
+#health2{
+    background-color: blue;
+    /* width: 42vw; */
+    height: 20px;
+    margin: 0 0 -4px 1vw;
+    /* border-right: 1px solid black; */
+    /* padding-bottom: 0; */
+}
+#health1-div, #health2-div{
+    width: 43vw;
+    border-right: 2px solid black;
+    /* border-top-right-radius: .8px;
+    border-top-left-radius: .8px; */
+}
