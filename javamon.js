@@ -10,7 +10,9 @@ let player1Scene = document.getElementById('player1');
 let player2Scene = document.getElementById('player2');
 let health1 = document.getElementById('health1');
 let health2 = document.getElementById('health2');
-
+let columns = document.getElementsByClassName('column1')[0];
+let player1Div = document.getElementsByClassName('player1')[0]
+let player2Div = document.getElementsByClassName('player2')[0]
 // Array to automatically store all javamon
 var javamon = [];
 
@@ -158,13 +160,40 @@ dragon.moves.push(new Move('Roar of Time', 130, 4, 1));
 dragon.moves.push(new Move('Outrage', 120, 5, 2));
 dragon.moves.push(new Move('Draco Meteor', 75, 7, 4));
 
+let background = [];
+
+function Background(name, src, floor){
+    this.name = name;
+    this.src = src;
+    this.floor = floor;
+}
+
+let greens = new Background('greens', '/images/greens.png', '/images/greens-floor.png')
+
+
 window.onload = function java(){
     // pickJavamon();
     // assignMoves();
     // currentJavamon();
+    playerPickCreate();
+    playerPick(1);
     createButton();
     clickEm();
+    // randomPick();
+    // next.click();
 }
+
+function randomPick(){
+    for (var i=0; i<4; i++){
+        player1Javamon.push(javamon[Math.floor(Math.random()*javamon.length)]);
+        player2Javamon.push(javamon[Math.floor(Math.random()*javamon.length)])
+    }
+}
+
+// document.getElementById('play').onclick = function(){
+//     createButton();
+//     clickEm();
+// }
 
 document.getElementById('fight').onclick = function(){
     if ((player1Move && player2Move) || (current1 && player2Move) || (player1Move && current2) || (current1 && current2))
@@ -184,13 +213,43 @@ document.getElementById('next').onclick = function(){
     pickEm();
     showJavamon(current1Javamon, current2Javamon);
     changeHealth();
+    deleteInfo();
+    insertFloor();
     }
+}
+
+function insertFloor(num){
+    image1 = document.createElement('img');
+    image2 = document.createElement('img');
+    image1.id = 'floor1';
+    image1.src = greens.floor;
+    image2.id = 'floor2';
+    image2.src = greens.floor;
+    player1Div.insertBefore(image1, player1Scene);
+    player2Div.insertBefore(image2, player2Scene);
 }
 
 // This function displays current Javamon on screen
 function showJavamon(current1, current2){
     player1Scene.src = current1.sprite1;
     player2Scene.src = current2.sprite2;
+}
+function javamonPosition(){
+    x = columns.clientWidth/2 - player1Scene.width/2 + 'px';
+    x1 = 15 - player1Scene.width*15/100 + 'vw';
+    player1Scene.style.left = x;
+    player2Scene.style.left = x1;
+}
+
+// This function displays whose turn it is to pick their Javamon
+function playerPickCreate(){
+    this.h1 = document.createElement('h1');
+    h1.style.margin = '30px 0 50px 25vw';
+    body.insertBefore(h1, afterCanvas);
+}
+
+function playerPick(num){
+    h1.innerHTML = 'Player '+num+', pick your Javamon!';
 }
 
 // This functions creates a button and displays it for each Javamon
@@ -203,6 +262,10 @@ function createButton(){
         body.insertBefore(newButton, afterCanvas);
         console.log(document.getElementsByTagName('button')[i]);
     })
+    // document.getElementById('play').className = 'display-none';
+    // document.getElementsByTagName('h1')[0].className = 'display-none';
+    // document.getElementsByTagName('p')[0].className = 'display-none';
+    // document.getElementById('next').className = '';
 }
 
 // Adds Javamon to each players' array (P1 first then P2)
@@ -213,7 +276,7 @@ function clickEm(){
     for (var i = 0; i< javamonButton.length; i++){
         let button = javamonButton[i];
         button.onclick = function(){
-        pickJavamon(button.id);
+        pickJavamon(button);
         }
     }
 }
@@ -222,18 +285,32 @@ function clickEm(){
 function pickJavamon(e){
     if (player1Javamon.length < 4){
         javamon.forEach(function(i){
-            if (e === i.name){
+            if (e.id === i.name){
                 player1Javamon.push(i)
-                console.log(player1Javamon)
+                // console.log(player1Javamon)
+                e.className = 'javamon-button active'
             }
         })
+        if (player1Javamon.length == 4){
+            playerPick(2);
+            for (var i=0; i<4; i++){
+                e.parentNode.getElementsByClassName('javamon-button active')[0].className = 'javamon-button';
+            }
+        }
     } else if(player2Javamon.length < 4) {
         javamon.forEach(function(i){
-            if (e === i.name){
+            if (e.id === i.name){
                 player2Javamon.push(i)
-                console.log(player2Javamon)
+                // console.log(player2Javamon)
+                e.className = 'javamon-button active'
             }
         })
+        if (player2Javamon.length == 4){
+            for (var i=0; i<4; i++){
+                e.parentNode.getElementsByClassName('javamon-button active')[0].className = 'javamon-button';
+            }
+            h1.innerHTML = 'Ready!';
+        }
     }
 }
 
@@ -324,12 +401,16 @@ function fightScreen(){
     chooseMove1.id = 'move1';
     chooseMove1.innerHTML = 'Fight!';
     chooseMove1.className = 'p1-button';
+    // chooseMove1.style.width = columns.clientWidth/2 - 40 + 'px';
     switchJavamon1.id = 'switch1';
     switchJavamon1.innerHTML = 'Switch Javamon';
     switchJavamon1.className = 'p1-button';
+    // switchJavamon1.style.width = columns.clientWidth/2 - 20 + 'px';
+    // switchJavamon1.style.width = columns.width + 'px';
     runAway1.id = 'run1';
     runAway1.innerHTML = 'Run!';
     runAway1.className = 'p1-button';
+    // runAway1.style.width = columns.clientWidth/2 - 40 + 'px';
 
     // Creates Player 2's buttons
     column2.appendChild(chooseMove2);
@@ -463,8 +544,33 @@ function pickEm(){
             // createNext(2, 1);
             displayFightButton();
             pickedInput();
+            resetPlayerMargin();
         }
     }
+}
+
+function resetPlayerMargin(){
+    x = player1.height;
+    y = player2.height;
+    player1Margin = '';
+    player2Margin = '';
+    player1.style.margin = player1Margin;
+    player2.style.margin = player2Margin;
+
+}
+
+function playerMargin(){
+    x = player1.height;
+    y = player2.height;
+    player1Margin = 3200/x + 'px' + ' 0 0';
+    player2Margin = 3200/y + 'px' + ' 0 0';
+    player1.style.margin = player1Margin;
+    player2.style.margin = player2Margin;
+}
+
+// Function deletes player pick info
+function deleteInfo(){
+    h1.className = 'display-none';
 }
 
 // Deletes 'Fight Switch Run' and 'Next' buttons once next is clicked
@@ -797,6 +903,6 @@ function deleteMoves(){
 }
 
 function changeHealth(){
-    health1.style.width = 42*current1Javamon.health/100 + 'vw';
-    health2.style.width = 42*current2Javamon.health/100+'vw';
+    health1.style.width = 44.6*current1Javamon.health/100 + 'vw';
+    health2.style.width = 44.6*current2Javamon.health/100+'vw';
 }

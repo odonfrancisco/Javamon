@@ -4,17 +4,21 @@
     height: 40vw;
 }
 
-.javamon-button:first-of-type{
+/* .javamon-button:first-of-type{
     margin-top: 50px;
-}
+} */
 
 .javamon-button{
     margin: 10px;
     width: 100px;
     height: 60px;
     border-radius: 40px;
+    box-shadow: 0 4px grey;
 }
-
+.active{
+    top: 5px;
+    box-shadow: none;
+}
 .display-none{
     display: none;
 }
@@ -30,8 +34,8 @@
     margin-left: 150px;
 } */
 .p2-button, .p1-button{
-    margin: 10px 1vw 5px;
-    width: 20vw;
+    margin: 10px 1.3vw 5px;
+    width: 21vw;
     /* height: 6vw; */
     font-size: large;
 }
@@ -46,16 +50,69 @@
     column-width: 250px;
 } */
 #fight-scene{
-    column-count: 2;
+    display: flex;
+    align-items: flex-end;
+    /* column-count: 2; */
     /* border: 2px solid black; */
+    margin-top: 100px;
+    /* height: fit-content; */
+    margin-bottom: 20px;
+    /* background-color: orange; */
+    /* column-fill: auto; */
+    background-repeat: no-repeat;
+}
+#floor1{
+    position: absolute;
+    left: 22vw;
+    top: 120px;
+    /* z-index: 5 */
+}
+#floor2{
+    position: absolute;
+    left: 63vw;
+    top: 85px;
+    width: 150px;
+
+}
+.player1{
+    background-repeat: no-repeat;
+    background-position: relative;
+    /* left: 20px; */
 }
 
+#player1{
+    position: relative;
+    left: 25vw;
+    /* margin: 0 0 0 25vw; */
+    /* z-index: 3; */
+}
+
+#player2{
+    /* margin: 0 0 4vw 20vw; */
+    position: relative;
+    left: 20vw;
+    bottom: 40px;
+}
+
+.column1{
+    /* display: flex;  */
+    /* align-items: flex-start; */
+    /* background-color: magenta; */
+}
+.column2{
+    /* background-color: #2b0902; */
+}
+
+/* .player2{
+    margin-top: -s20px;
+    margin-bottom: 20px;
+} */
 
 #health1{
     background-color: blue;
-    /* width: 42vw; */
+    /* width: 100%; */
     height: 20px;
-    margin: 0 0 -4px 1vw;
+    margin: 0 0 -4px 1.3vw;
     /* border-top-right-radius: 45px;
     border-bottom-right-radius: 45px;
     border-top-left-radius: 25px;
@@ -66,13 +123,16 @@
     background-color: blue;
     /* width: 42vw; */
     height: 20px;
-    margin: 0 0 -4px 1vw;
+    margin: 0 0 -4px 5.2vw;
     /* border-right: 1px solid black; */
     /* padding-bottom: 0; */
 }
 #health1-div, #health2-div{
-    width: 43vw;
+    break-after: column;
+    width: 45.9vw;
+    margin-top: 40px;
     border-right: 2px solid black;
+    /* justify-content:  */
     /* border-top-right-radius: .8px;
     border-top-left-radius: .8px; */
 }
