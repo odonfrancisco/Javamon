@@ -11,8 +11,10 @@ let player2Scene = document.getElementById('player2');
 let health1 = document.getElementById('health1');
 let health2 = document.getElementById('health2');
 let columns = document.getElementsByClassName('column1')[0];
+let columns2 = document.getElementsByClassName('column2')[0];
 let player1Div = document.getElementsByClassName('player1')[0]
 let player2Div = document.getElementsByClassName('player2')[0]
+
 // Array to automatically store all javamon
 var javamon = [];
 
@@ -35,7 +37,7 @@ var bulbasaur = new Javamon('Bulbasaur', 'grass', 'https://img.pokemondb.net/spr
 var geodude = new Javamon('Geodude', 'rock', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/geodude.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/geodude.gif');
 var entei = new Javamon('Entei', 'fire', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/entei.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/entei.gif');
 var piplup = new Javamon('Piplup', 'water', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/piplup.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/piplup.gif');
-var nidoran = new Javamon('Nidoran', 'poison', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/nidoran-f.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/nidoran-m.gif');
+var nidoran = new Javamon('Nidoran', 'poison', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/nidoran-m.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/nidoran-m.gif');
 var meowth = new Javamon('Meowth', 'normal', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/meowth.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/meowth.gif');
 var abra = new Javamon('Abra', 'psychic', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/abra.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/abra.gif');
 var poliwag = new Javamon('Poliwag', 'water', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/poliwag.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/poliwag.gif');
@@ -168,7 +170,7 @@ function Background(name, src, floor){
     this.floor = floor;
 }
 
-let greens = new Background('greens', '/images/greens.png', '/images/greens-floor.png')
+let greens = new Background('greens', '/images/greens.jpg', '/images/greens-floor.png')
 
 
 window.onload = function java(){
@@ -196,8 +198,9 @@ function randomPick(){
 // }
 
 document.getElementById('fight').onclick = function(){
-    if ((player1Move && player2Move) || (current1 && player2Move) || (player1Move && current2) || (current1 && current2))
-    Fight();
+    if ((player1Move && player2Move) || (current1 && player2Move) || (player1Move && current2) || (current1 && current2)){
+        Fight();
+    }
 }
 
 // Assigns players' Javamon random moves and sets the Javamon they're going 
@@ -215,7 +218,13 @@ document.getElementById('next').onclick = function(){
     changeHealth();
     deleteInfo();
     insertFloor();
+    setBackground();
     }
+}
+
+function setBackground(){
+    url = 'url(' + greens.src + ')';
+    document.getElementById('fight-scene').style.backgroundImage = url;
 }
 
 function insertFloor(num){
@@ -233,7 +242,9 @@ function insertFloor(num){
 function showJavamon(current1, current2){
     player1Scene.src = current1.sprite1;
     player2Scene.src = current2.sprite2;
+    setTimeout(playerMargin, 100);
 }
+
 function javamonPosition(){
     x = columns.clientWidth/2 - player1Scene.width/2 + 'px';
     x1 = 15 - player1Scene.width*15/100 + 'vw';
@@ -244,7 +255,7 @@ function javamonPosition(){
 // This function displays whose turn it is to pick their Javamon
 function playerPickCreate(){
     this.h1 = document.createElement('h1');
-    h1.style.margin = '30px 0 50px 25vw';
+    // h1.style.margin = '30px 0 50px 25vw';
     body.insertBefore(h1, afterCanvas);
 }
 
@@ -254,12 +265,13 @@ function playerPick(num){
 
 // This functions creates a button and displays it for each Javamon
 function createButton(){
+    javamonDiv = document.getElementById('javamon-div');
     javamon.forEach(function(e, i){
         newButton = document.createElement('button');
         newButton.id = e.name;
         newButton.className = 'javamon-button';
         newButton.innerHTML = e.name;
-        body.insertBefore(newButton, afterCanvas);
+        javamonDiv.appendChild(newButton);
         console.log(document.getElementsByTagName('button')[i]);
     })
     // document.getElementById('play').className = 'display-none';
@@ -442,7 +454,7 @@ function createNext(num, before){
     div = document.createElement('div');
     next = document.createElement('button');
     next.id = 'next' + num;
-    next.innerHTML = 'Next';
+    next.innerHTML = 'Play!';
     div.appendChild(next);
     body.insertBefore(div, document.getElementById('next' + before).parentNode);
 }
@@ -544,7 +556,8 @@ function pickEm(){
             // createNext(2, 1);
             displayFightButton();
             pickedInput();
-            resetPlayerMargin();
+            // resetPlayerMargin();
+            // playerMargin();
         }
     }
 }
@@ -560,12 +573,20 @@ function resetPlayerMargin(){
 }
 
 function playerMargin(){
-    x = player1.height;
-    y = player2.height;
-    player1Margin = 3200/x + 'px' + ' 0 0';
-    player2Margin = 3200/y + 'px' + ' 0 0';
-    player1.style.margin = player1Margin;
-    player2.style.margin = player2Margin;
+    // x = player1.height;
+    // y = player2.height;
+    // player1Margin = 3200/x + 'px' + ' 0 0';
+    // player2Margin = 3200/y + 'px' + ' 0 0';
+    // player1.style.margin = player1Margin;
+    // player2.style.margin = player2Margin;
+
+    if (player1Scene.width > 0){
+    player1Right = 125 - player1Scene.width/2 + 'px';
+    player1Scene.style.left = player1Right;}
+
+    if (player2Scene.width > 0){
+	player2Right = 195 - player2Scene.width/2 + 'px';
+    player2Scene.style.left = player2Right;}
 }
 
 // Function deletes player pick info
@@ -626,7 +647,7 @@ function createMoveButtons(current, num){
         // console.log(current.moves[i])
         let button = document.createElement('button');
         let move = current.moves[i].name;
-        button.innerHTML = move;
+        button.innerHTML =  move + '<br>' + 'Power: ' + current.moves[i].power;
         button.id = move;
         switch (num){
             case 1: button.className = 'p1-button move1'; column1.appendChild(button); break;
@@ -674,7 +695,7 @@ function displayParty(party, num){
         // console.log(party.moves[i])
         let button = document.createElement('button');
         let name = party[i].name;
-        button.innerHTML = name;
+        button.innerHTML = name + '<br>' + 'Health: ' + party[i].health;
         button.id = name;
         switch (num){
             case 1: button.className = 'p1-button party1'; column1.appendChild(button); break;
@@ -748,13 +769,15 @@ function Fight(){
     if (move1 && move2){
         if (move1Speed > move2Speed){
             // Player one's move goes first and hits player 2's Javamon
-            current2Javamon.health -= move1.power/3;
+            current2Javamon.health -= Math.floor(move1.power/3);
+            animatePlayer(1);
             console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
             console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
             console.log('');
             // Makes sure second player can't hit if their health is 0 or less
             if (current2Javamon.health > 0){
-            current1Javamon.health -= move2.power/3;
+            current1Javamon.health -= Math.floor(move2.power/3);
+            animatePlayer(2);
             console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
             console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
             } else if (current2Javamon.health <= 0){
@@ -773,17 +796,19 @@ function Fight(){
             // console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
             // console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
         // } else if(move1Speed < move2Speed) {
-        //     current1Javamon.health -= move2.power/3;
-        //     current2Javamon.health -= move1.power/3;
+        //     current1Javamon.health -= Math.floor(move2.power/3);
+        //     current2Javamon.health -= Math.floor(move1.power/3);
         } 
         // Player 2's move goes first
         else {
-            current1Javamon.health -= move2.power/3;
+            current1Javamon.health -= Math.floor(move2.power/3);
+            animatePlayer(2);
             console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
             console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
             console.log('')
             if (current1Javamon.health > 0){
-            current2Javamon.health -= move1.power/3;
+            current2Javamon.health -= Math.floor(move1.power/3);
+            animatePlayer(1);
             console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
             console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
             } else if (current1Javamon.health <= 0){
@@ -824,7 +849,8 @@ function Fight(){
             // console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
         } 
     if (move2 === null && move1){
-        current2Javamon.health -= move1.power/3;
+        current2Javamon.health -= Math.floor(move1.power/3);
+        animatePlayer(1);
             console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
             console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
             console.log('');
@@ -838,7 +864,8 @@ function Fight(){
         }
     }
     if (move1 === null && move2){
-        current1Javamon.health -= move2.power/3;
+        current1Javamon.health -= Math.floor(move2.power/3);
+        animatePlayer(2);
             console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
             console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
             console.log('')
@@ -905,4 +932,17 @@ function deleteMoves(){
 function changeHealth(){
     health1.style.width = 44.6*current1Javamon.health/100 + 'vw';
     health2.style.width = 44.6*current2Javamon.health/100+'vw';
+}
+
+function animatePlayer(num){
+    switch (num){
+        case 1: player1Scene.style.animationName = 'player1-animate'; break;
+        case 2: player2Scene.style.animationName = 'player2-animate'; break;
+    }
+    setTimeout(function(){
+        switch (num){
+            case 1: player1Scene.style.animationName = ''; break;
+            case 2: player2Scene.style.animationName = ''; break;
+        }
+    }, 3000)
 }

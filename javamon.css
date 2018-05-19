@@ -1,3 +1,7 @@
+head, body, html{
+    margin: 0;
+}
+
 #canvas{
     background-color: red;
     width: 95vw; 
@@ -7,6 +11,10 @@
 /* .javamon-button:first-of-type{
     margin-top: 50px;
 } */
+
+h1{
+    margin-left: 50px;
+}
 
 .javamon-button{
     margin: 10px;
@@ -23,7 +31,7 @@
     display: none;
 }
 
-#next, #next1{
+#next, #next1, #fight{
     margin-top: 50px;
 }
 /* Weird that this doesn't work*/
@@ -36,8 +44,28 @@
 .p2-button, .p1-button{
     margin: 10px 1.3vw 5px;
     width: 21vw;
+    height: 70px;
     /* height: 6vw; */
     font-size: large;
+    border-radius: 20px;
+}
+
+#javamon-div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+}
+
+#next-div{
+    display: flex;
+    justify-content: center;
+}
+
+#next{
+    /* position: absolute;
+    top: 400px; */
+    width: 30%;
+    height: 40px;
 }
 
 #column-div{
@@ -52,54 +80,82 @@
 #fight-scene{
     display: flex;
     align-items: flex-end;
+    /* height: 400px; */
     /* column-count: 2; */
     /* border: 2px solid black; */
-    margin-top: 100px;
+    padding-top: 100px;
     /* height: fit-content; */
     margin-bottom: 20px;
-    /* background-color: orange; */
     /* column-fill: auto; */
     background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 100%;
+    /* height: 400px; */
 }
+
 #floor1{
     position: absolute;
-    left: 22vw;
-    top: 120px;
-    /* z-index: 5 */
+    /* justify-content: flex-end; */
+    left: 30px;
+    bottom: -30px;
+    /* top: 5px; */
+    /* right: -10px; */
 }
 #floor2{
     position: absolute;
-    left: 63vw;
-    top: 85px;
+    /* right: 165px; */
+    left: 115px;
+    bottom: 25px;
+    /* top: 90px; */
     width: 150px;
 
 }
-.player1{
-    background-repeat: no-repeat;
-    background-position: relative;
-    /* left: 20px; */
+.player1, .player2{
+    /* display: flex;
+    justify-content: flex-end; */
+    position: relative;
+}
+
+@keyframes player1-animate{
+    0% {margin-left: 0px}
+    50%{ margin-left: 30px;}
+    100% {margin-left: 0px;}
+}
+
+@keyframes player2-animate{
+    0% {margin-left: 0px;}
+    50% {margin-left: -30px;}
+    100% {margin-left: 0px;}
 }
 
 #player1{
     position: relative;
-    left: 25vw;
+    /* bottom: 10px; */
+    /* right: 65px;  */
     /* margin: 0 0 0 25vw; */
     /* z-index: 3; */
-}
+    /* animation-name: player1Animate; */
+    animation-duration: .2s;
+} 
 
 #player2{
     /* margin: 0 0 4vw 20vw; */
     position: relative;
-    left: 20vw;
-    bottom: 40px;
+    /* right: 175px; */
+    bottom: 50px;
+    /* animation-name: player2Animate; */
+    animation-duration: .2s;
 }
 
 .column1{
     /* display: flex;  */
+    /* height: 400px; */
     /* align-items: flex-start; */
     /* background-color: magenta; */
 }
 .column2{
+    margin-left: 1.3vw;
+    /* height: 400px; */
     /* background-color: #2b0902; */
 }
 
@@ -113,10 +169,10 @@
     /* width: 100%; */
     height: 20px;
     margin: 0 0 -4px 1.3vw;
-    /* border-top-right-radius: 45px;
-    border-bottom-right-radius: 45px;
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px; */
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 25px;
 }
 
 #health2{
@@ -124,8 +180,10 @@
     /* width: 42vw; */
     height: 20px;
     margin: 0 0 -4px 5.2vw;
-    /* border-right: 1px solid black; */
-    /* padding-bottom: 0; */
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 25px;
 }
 #health1-div, #health2-div{
     break-after: column;
@@ -133,6 +191,25 @@
     margin-top: 40px;
     border-right: 2px solid black;
     /* justify-content:  */
-    /* border-top-right-radius: .8px;
-    border-top-left-radius: .8px; */
+    /* border-bottom-right-radius: 8px; */
+    /* border-top-left-radius: .8px; */
+}
+#health2-div{
+    width: 49.9vw;
+}
+#next1, #fight{
+    width: 100%;
+    height: 40px;
+    border-radius: 40px;
+    background-color: #EE513A;
+    color: whitesmoke;
+    font-size: large;
+    /* margin: 0 10px 0; */
+}
+
+img{
+    /* width: 100%; */
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
 }
