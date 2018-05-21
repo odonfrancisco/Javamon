@@ -14,6 +14,9 @@ let columns = document.getElementsByClassName('column1')[0];
 let columns2 = document.getElementsByClassName('column2')[0];
 let player1Div = document.getElementsByClassName('player1')[0]
 let player2Div = document.getElementsByClassName('player2')[0]
+let player1Name = document.getElementById('player1-name');
+let player2Name = document.getElementById('player2-name');
+
 
 // Array to automatically store all javamon
 var javamon = [];
@@ -48,6 +51,27 @@ var eevee = new Javamon('Eevee', 'normal', 'https://img.pokemondb.net/sprites/bl
 var porygon = new Javamon('Porygon', 'normal', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/porygon.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/porygon.gif');
 var sudowoodo = new Javamon('Sudowoodo', 'rock', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/sudowoodo-f.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/sudowoodo-f.gif');
 var garchomp = new Javamon('Garchomp', 'dragon', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/garchomp.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/garchomp.gif');
+
+// var lopunny = new Javamon('Lopunny', 'fighting', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/lopunny.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/lopunny.gif');
+// var dusclop = new Javamon('Dusclop', 'ghost', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/dusclops.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/dusclops.gif');
+var wailord = new Javamon('Wailord', 'water', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/wailord.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/wailord.gif');  
+var milotic = new Javamon('Milotic', 'water', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/milotic-f.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/milotic-f.gif'); 
+// var dialga = new Javamon('Dialga', 'steel', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/dialga.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/dialga.gif'); 
+// var darkrai = new Javamon('Darkrai', 'dark', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/darkrai.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/darkrai.gif'); 
+// var gliscor = new Javamon('Gliscor', 'ground', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/gliscor.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/gliscor.gif'); 
+// var rotom = new Javamon('Rotom', 'electric', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/rotom.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/rotom.gif');
+// var glalie = new Javamon('Glalie', 'ice', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/glalie.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/glalie.gif'); 
+var palkia = new Javamon('Palkia', 'dragon', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/palkia.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/palkia.gif'); 
+// var giratina = new Javamon('Giratina', 'ghost', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/giratina-origin.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/giratina-origin.gif');
+var mew = new Javamon('Mew', 'psychic', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/mew.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/mew.gif'); 
+// var houndoom = new Javamon('Houndoom', 'dark', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/houndoom.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/houndoom.gif'); 
+// var shedinja = new Javamon('Shedinja', 'bug', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/shedinja.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/shedinja.gif'); 
+// var bronzong = new Javamon('Bronzong', 'steel', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/bronzong.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/bronzong.gif'); 
+var gardevoir = new Javamon('Gardevoir', 'psychic', 'https://img.pokemondb.net/sprites/black-white/anim/back-normal/gardevoir.gif', 'https://img.pokemondb.net/sprites/black-white/anim/normal/gardevoir.gif'); 
+var ditto = new Javamon('Ditto', 'normal', 'https://img.pokemondb.net/sprites/black-white/anim/back-shiny/ditto.gif', 'https://img.pokemondb.net/sprites/black-white/anim/shiny/ditto.gif');
+
+
+
 // var chreast = new Javamon('Chreast', 'normal', 'src');
 // var gengar = new Javamon('Gengar', 'ghost', 'src');
 
@@ -219,6 +243,138 @@ document.getElementById('next').onclick = function(){
     deleteInfo();
     insertFloor();
     setBackground();
+    playerChoose();
+    }
+}
+
+i = 0;
+e = 0;
+function playerChoose(){
+    document.onkeydown = function(event){
+        // console.log(event.keyCode)
+        // Keyboard clicks for Arrow Keys
+        if (document.getElementsByClassName('p2-button')[0].className == 'p2-button' || document.getElementsByClassName('p2-button')[0].className == 'p2-button active'){
+            switch (event.keyCode){
+                case 38: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
+                case 39: console.log(event.key, event.keyCode); chooseP2(1).click(); break;
+                case 40: console.log(event.key, event.keyCode); chooseP2(3).click(); break;
+                case 37: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
+                case 13: next1.click(); break;
+            }
+            // Keyboard clicks for WASD
+            switch (event.keyCode){
+                case 87: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
+                case 68: console.log(event.key, event.keyCode); chooseP1(1).click(); break;
+                case 83: console.log(event.key, event.keyCode); chooseP1(3).click(); break;
+                case 65: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
+                case 13: next1.click(); break;
+            }
+            function chooseP1(nu){
+                if (nu == 1){
+                    if (e<2){
+                        e++;
+                    }
+                    else {
+                        e=0;
+                    }
+                }
+                if (nu == 0){
+                    if (e>0){
+                        e--;
+                    }
+                    else {
+                        e=2;
+                    }
+                }
+                if (nu ==3){
+                    e = 2;
+                }
+                return document.getElementsByClassName('p1-button')[e];
+            }
+            function chooseP2(nu){
+                if (nu == 1){
+                    if (i<2){
+                        i++;
+                    }
+                    else {
+                        i=0;
+                    }
+                }
+                if (nu == 0){
+                    if (i>0){
+                        i--;
+                    }
+                    else {
+                        i=2;
+                    }
+                }
+                if (nu == 3){
+                    i = 2;
+                }
+                return document.getElementsByClassName('p2-button')[i];
+            }
+        }
+        if (document.getElementsByClassName('p2-button').length > 3){
+            switch (event.keyCode){
+                case 38: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
+                case 39: console.log(event.key, event.keyCode); chooseP2(1).click(); break;
+                case 40: console.log(event.key, event.keyCode); chooseP2(3).click(); break;
+                case 37: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
+                case 13: fight.click(); break;
+            }
+            // Keyboard clicks for WASD
+            switch (event.keyCode){
+                case 87: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
+                case 68: console.log(event.key, event.keyCode); chooseP1(1).click(); break;
+                case 83: console.log(event.key, event.keyCode); chooseP1(3).click(); break;
+                case 65: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
+                case 13: fight.click(); break;
+            }
+            function chooseP1(nu){
+                if (nu == 1){
+                    if (e<3){
+                        e++;
+                    }
+                    else {
+                        e=0;
+                    }
+                }
+                if (nu == 0){
+                    if (e>0){
+                        e--;
+                    }
+                    else {
+                        e=3;
+                    }
+                }
+                if (nu == 3){
+                    e = 3;
+                }
+                return move1[e];
+            }
+            function chooseP2(nu){
+                if (nu == 1){
+                    if (i<3){
+                        i++;
+                    }
+                    else {
+                        i=0;
+                    }
+                }
+                if (nu == 0){
+                    if (i>0){
+                        i--;
+                    }
+                    else {
+                        i=3;
+                    }
+                }
+                if (nu == 3){
+                    i = 3;
+                }
+                return move2[i];
+            }
+        }
     }
 }
 
@@ -322,6 +478,8 @@ function pickJavamon(e){
                 e.parentNode.getElementsByClassName('javamon-button active')[0].className = 'javamon-button';
             }
             h1.innerHTML = 'Ready!';
+            body.style.backgroundColor = 'orange';
+            setTimeout(function(){body.style.backgroundColor = '#252525';}, 500)
         }
     }
 }
@@ -485,6 +643,10 @@ function chooseAction1(){
             p1Click.push(e.path[0].attributes[0].value);
             console.log(p1Click);
         }
+        for (var i=0; i<document.getElementsByClassName('p1-button active').length; i++){
+            document.getElementsByClassName('p1-button active')[0].className = 'p1-button';
+        }
+        e.path[0].className = 'p1-button active';
     }
     switchJavamon1.onclick = function(e){
         if(p1Click.length === 0){
@@ -496,6 +658,10 @@ function chooseAction1(){
             p1Click.push(e.path[0].attributes[0].value);
             console.log(p1Click);
         }
+        for (var i=0; i<document.getElementsByClassName('p1-button active').length; i++){
+            document.getElementsByClassName('p1-button active')[0].className = 'p1-button';
+        }
+        e.path[0].className = 'p1-button active';
     }
     runAway1.onclick = function(e){
         if(p1Click.length === 0){
@@ -507,6 +673,10 @@ function chooseAction1(){
             p1Click.push(e.path[0].attributes[0].value);
             console.log(p1Click);
         }
+        for (var i=0; i<document.getElementsByClassName('p1-button active').length; i++){
+            document.getElementsByClassName('p1-button active')[0].className = 'p1-button';
+        }
+        e.path[0].className = 'p1-button active';
     }
 }
 
@@ -522,6 +692,10 @@ function chooseAction2(){
             p2Click.push(e.path[0].attributes[0].value);
             console.log(p2Click);
         }
+        for (var i=0; i<document.getElementsByClassName('p2-button active').length; i++){
+            document.getElementsByClassName('p2-button active')[0].className = 'p2-button';
+        }
+        e.path[0].className = 'p2-button active';
     }
     switchJavamon2.onclick = function(e){
         if(p2Click.length === 0){
@@ -533,6 +707,10 @@ function chooseAction2(){
             p2Click.push(e.path[0].attributes[0].value);
             console.log(p2Click);
         }
+        for (var i=0; i<document.getElementsByClassName('p2-button active').length; i++){
+            document.getElementsByClassName('p2-button active')[0].className = 'p2-button';
+        }
+        e.path[0].className = 'p2-button active';
     }
     runAway2.onclick = function(e){
         if(p2Click.length === 0){
@@ -544,6 +722,10 @@ function chooseAction2(){
             p2Click.push(e.path[0].attributes[0].value);
             console.log(p2Click);
         }
+        for (var i=0; i<document.getElementsByClassName('p2-button active').length; i++){
+            document.getElementsByClassName('p2-button active')[0].className = 'p2-button';
+        }
+        e.path[0].className = 'p2-button active';
     }
 }
 
@@ -668,13 +850,26 @@ function pickMove(move, num){
         }
         // Pushes move pressed into variable which will be used for fight
         button.onclick = function(e){
+            if (num == 1){
+                for (var i=0; i< move1.length; i++){
+                    move1[i].className = 'p1-button move1';
+                }
+            }
+            if (num == 2){
+                for (var i=0; i< move2.length; i++){
+                    move2[i].className = 'p2-button move2';
+                }
+            }
+            
             current.moves.forEach(function(i){
                 if (e.path[0].id === i.name && e.path[0].className === 'p1-button move1'){
                     player1Move = i;
+                    e.path[0].className = 'p1-button move1 active';
                     // console.log(i)
                 }
                 else if (e.path[0].id === i.name && e.path[0].className === 'p2-button move2'){
                     player2Move = i;
+                    e.path[0].className = 'p2-button move2 active';
                 }
             })
             // console.log(current.moves)
@@ -774,21 +969,22 @@ function Fight(){
             console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
             console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
             console.log('');
+            updateHealth(2);
             // Makes sure second player can't hit if their health is 0 or less
             if (current2Javamon.health > 0){
-            current1Javamon.health -= Math.floor(move2.power/3);
-            animatePlayer(2);
-            console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
-            console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+                setTimeout(function(){
+                    current1Javamon.health -= Math.floor(move2.power/3);
+                    animatePlayer(2);
+                    console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+                    console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+                    updateHealth(1);
+                    if (current1Javamon.health <= 0){
+                        current1Dead();
+                    }
+                }, 1000)
             } else if (current2Javamon.health <= 0){
-                console.log(current2Javamon.name + ' has fainted!');
-                player2Javamon.splice(player2Javamon.indexOf(current2Javamon), 1);
-                // console.log(player2Javamon[Math.floor(Math.random()*player2Javamon.length)])
-                current2Javamon = player2Javamon[Math.floor(Math.random()*player2Javamon.length)];
-                if (player2Javamon.length!=0){
-                    console.log(current2Javamon.name + ' to the rescue!');
-                    console.log('')
-                }
+                // updateHealth(4);
+                current2Dead();
             }
             // console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
             // console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
@@ -806,42 +1002,49 @@ function Fight(){
             console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
             console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
             console.log('')
+            updateHealth(1);
             if (current1Javamon.health > 0){
-            current2Javamon.health -= Math.floor(move1.power/3);
-            animatePlayer(1);
-            console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
-            console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+                setTimeout(function(){
+                    current2Javamon.health -= Math.floor(move1.power/3);
+                    animatePlayer(1);
+                    console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+                    console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+                    updateHealth(2);
+                    if (current2Javamon.health <= 0){
+                        current2Dead();
+                    }
+                }, 1000)
             } else if (current1Javamon.health <= 0){
-                console.log(current1Javamon.name + ' has fainted!');
-                player1Javamon.splice(player1Javamon.indexOf(current1Javamon), 1);
-                // console.log(player1Javamon[Math.floor(Math.random()*player1Javamon.length)])
-                current1Javamon = player1Javamon[Math.floor(Math.random()*player1Javamon.length)];
-                if (player1Javamon.length!=0){
-                    console.log(current1Javamon.name + ' to the rescue!');
-                    console.log('')
-                }
+                current1Dead();
             }
         }
-        if (current1Javamon.health <= 0){
+
+        function current1Dead(){
             console.log(current1Javamon.name + ' has fainted!');
             player1Javamon.splice(player1Javamon.indexOf(current1Javamon), 1);
             // console.log(player1Javamon[Math.floor(Math.random()*player1Javamon.length)])
             current1Javamon = player1Javamon[Math.floor(Math.random()*player1Javamon.length)];
+            showJavamon(current1Javamon, current2Javamon);
+            updateHealth(1);
             if (player1Javamon.length!=0){
                 console.log(current1Javamon.name + ' to the rescue!');
                 console.log('')
             }
         }
-        if (current2Javamon.health <= 0){
+            
+        function current2Dead(){
             console.log(current2Javamon.name + ' has fainted!');
             player2Javamon.splice(player2Javamon.indexOf(current2Javamon), 1);
             // console.log(player2Javamon[Math.floor(Math.random()*player2Javamon.length)])
             current2Javamon = player2Javamon[Math.floor(Math.random()*player2Javamon.length)];
+            showJavamon(current1Javamon, current2Javamon);
+            updateHealth(2);
             if (player2Javamon.length!=0){
                 console.log(current2Javamon.name + ' to the rescue!');
                 console.log('')
             }
         }
+            
             // console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
             // console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
             // console.log('')
@@ -855,13 +1058,9 @@ function Fight(){
             console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
             console.log('');
         if (current2Javamon.health <= 0){
-            console.log(current2Javamon.name + ' has fainted!');
-            player2Javamon.splice(player2Javamon.indexOf(current2Javamon), 1);
-            current2Javamon = player2Javamon[Math.floor(Math.random()*player2Javamon.length)];
-            if (player2Javamon.length!=0){
-                console.log(current2Javamon.name + ' to the rescue!');  
-            }
+            current2Dead();
         }
+        showJavamon(current1Javamon, current2Javamon);
     }
     if (move1 === null && move2){
         current1Javamon.health -= Math.floor(move2.power/3);
@@ -870,14 +1069,9 @@ function Fight(){
             console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
             console.log('')
         if (current1Javamon.health <= 0){
-            console.log(current1Javamon.name + ' has fainted!');
-            player1Javamon.splice(player1Javamon.indexOf(current1Javamon), 1);
-            current1Javamon = player1Javamon[Math.floor(Math.random()*player1Javamon.length)];
-            if (player1Javamon.length!=0){
-                console.log(current1Javamon.name + ' to the rescue!');
-                console.log('')
-            }
+            current1Dead();
         }
+        showJavamon(current1Javamon, current2Javamon);
     }
     if (player1Javamon.length === 0){
         console.log('Player 1 has no more Javamon!')
@@ -894,7 +1088,7 @@ function Fight(){
     // if (player2Javamon.length != 0){
     //     console.log('Player 2\'s ' + current2Javamon.name + ' health reduced to ' + current2Javamon.health);
     // }
-    console.log('')
+    // console.log('')
     resetOptions();
     deleteMoves();
     if (current1)current1Javamon = current1;
@@ -932,6 +1126,25 @@ function deleteMoves(){
 function changeHealth(){
     health1.style.width = 44.6*current1Javamon.health/100 + 'vw';
     health2.style.width = 44.6*current2Javamon.health/100+'vw';
+
+    player1Name.firstChild.innerHTML = current1Javamon.name + '  HP: ' + current1Javamon.health;
+    player2Name.firstChild.innerHTML = current2Javamon.name + '  HP: ' + current2Javamon.health;
+    player1Name.firstChild.className = '';
+    player2Name.firstChild.className = '';
+}
+
+function updateHealth(num){
+    switch (num){
+        case 1: health1.style.width = 44.6*current1Javamon.health/100 + 'vw';
+        case 2: health2.style.width = 44.6*current2Javamon.health/100+'vw';
+        // case 3: health1.style.width = '0vw';
+        // case 4: health2.style.width = '0vw';
+    }
+
+    player1Name.firstChild.innerHTML = current1Javamon.name + '  HP: ' + current1Javamon.health;
+    player2Name.firstChild.innerHTML = current2Javamon.name + '  HP: ' + current2Javamon.health;
+    player1Name.firstChild.className = '';
+    player2Name.firstChild.className = '';
 }
 
 function animatePlayer(num){
@@ -946,3 +1159,13 @@ function animatePlayer(num){
         }
     }, 3000)
 }
+
+// document.addEventListener('keydown', (event) => {
+//     this.keyName = event.keyCode;
+//     // console.log(keyName + event.keyCode);
+// })
+
+// document.onkeydown = function(event){
+//     console.log(event.keyCode);
+//     // event
+// }
