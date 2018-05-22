@@ -253,13 +253,17 @@ function playerChoose(){
     document.onkeydown = function(event){
         // console.log(event.keyCode)
         // Keyboard clicks for Arrow Keys
-        if (document.getElementsByClassName('p2-button')[0].className == 'p2-button' || document.getElementsByClassName('p2-button')[0].className == 'p2-button active'){
+        if (document.getElementsByClassName('p2-button')[0].className.indexOf('display-none') == -1){
+            // Keyboard clicks for arrow keys
             switch (event.keyCode){
                 case 38: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
                 case 39: console.log(event.key, event.keyCode); chooseP2(1).click(); break;
                 case 40: console.log(event.key, event.keyCode); chooseP2(3).click(); break;
                 case 37: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
-                case 13: next1.click(); break;
+                // case 13: next1.click(); break;
+            }
+            switch (event.keyCode){
+                case 13: next1.click();
             }
             // Keyboard clicks for WASD
             switch (event.keyCode){
@@ -267,7 +271,6 @@ function playerChoose(){
                 case 68: console.log(event.key, event.keyCode); chooseP1(1).click(); break;
                 case 83: console.log(event.key, event.keyCode); chooseP1(3).click(); break;
                 case 65: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
-                case 13: next1.click(); break;
             }
             function chooseP1(nu){
                 if (nu == 1){
@@ -281,6 +284,9 @@ function playerChoose(){
                 if (nu == 0){
                     if (e>0){
                         e--;
+                    }
+                    else if (e <= 0){
+                        e = 2
                     }
                     else {
                         e=2;
@@ -304,6 +310,9 @@ function playerChoose(){
                     if (i>0){
                         i--;
                     }
+                    else if (e <= 0){
+                        i = 2
+                    }
                     else {
                         i=2;
                     }
@@ -314,22 +323,29 @@ function playerChoose(){
                 return document.getElementsByClassName('p2-button')[i];
             }
         }
-        if (document.getElementsByClassName('p2-button').length > 3){
-            switch (event.keyCode){
-                case 38: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
-                case 39: console.log(event.key, event.keyCode); chooseP2(1).click(); break;
-                case 40: console.log(event.key, event.keyCode); chooseP2(3).click(); break;
-                case 37: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
-                case 13: fight.click(); break;
+        if (move1.length > 3 || document.getElementsByClassName('move2').length > 3){
+            // Keyboard clicks for arrow keys
+            if (move2.length > 3){
+                switch (event.keyCode){
+                    case 38: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
+                    case 39: console.log(event.key, event.keyCode); chooseP2(1).click(); break;
+                    case 40: console.log(event.key, event.keyCode); chooseP2(3).click(); break;
+                    case 37: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
+                    case 13: fight.click(); break;
+                }
             }
+            
             // Keyboard clicks for WASD
-            switch (event.keyCode){
-                case 87: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
-                case 68: console.log(event.key, event.keyCode); chooseP1(1).click(); break;
-                case 83: console.log(event.key, event.keyCode); chooseP1(3).click(); break;
-                case 65: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
-                case 13: fight.click(); break;
+            if (move1.length > 3){
+                switch (event.keyCode){
+                    case 87: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
+                    case 68: console.log(event.key, event.keyCode); chooseP1(1).click(); break;
+                    case 83: console.log(event.key, event.keyCode); chooseP1(3).click(); break;
+                    case 65: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
+                    case 13: fight.click(); break;
+                }
             }
+            
             function chooseP1(nu){
                 if (nu == 1){
                     if (e<3){
@@ -373,6 +389,78 @@ function playerChoose(){
                     i = 3;
                 }
                 return move2[i];
+            }
+        }
+        if (document.getElementsByClassName('party1').length > 0 || document.getElementsByClassName('party2').length > 0){
+            // Keyboard clicks for arrow keys
+            if (party2.length > 0){
+                switch (event.keyCode){
+                    case 38: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
+                    case 39: console.log(event.key, event.keyCode); chooseP2(1).click(); break;
+                    case 40: console.log(event.key, event.keyCode); chooseP2(3).click(); break;
+                    case 37: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
+                    // case 13: fight.click(); break;
+                }
+            }
+            switch (event.keyCode){
+                case 13: fight.click(); break;
+            }
+            
+            // Keyboard clicks for WASD
+            if (party1.length > 0){
+                switch (event.keyCode){
+                    case 87: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
+                    case 68: console.log(event.key, event.keyCode); chooseP1(1).click(); break;
+                    case 83: console.log(event.key, event.keyCode); chooseP1(3).click(); break;
+                    case 65: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
+                    // case 13: fight.click(); break;
+                }
+            }
+            
+            function chooseP1(nu){
+                if (nu == 1){
+                    if (e<3){
+                        e++;
+                    }
+                    else {
+                        e=0;
+                    }
+                }
+                if (nu == 0){
+                    if (e>0){
+                        e--;
+                    }
+                    else {
+                        e=3;
+                    }
+                }
+                if (nu == 3){
+                    e = 3;
+                }
+                return party1[e];
+                // console.log(party1[e]);
+            }
+            function chooseP2(nu){
+                if (nu == 1){
+                    if (i<3){
+                        i++;
+                    }
+                    else {
+                        i=0;
+                    }
+                }
+                if (nu == 0){
+                    if (i>0){
+                        i--;
+                    }
+                    else {
+                        i=3;
+                    }
+                }
+                if (nu == 3){
+                    i = 3;
+                }
+                return party2[i];
             }
         }
     }
@@ -428,7 +516,7 @@ function createButton(){
         newButton.className = 'javamon-button';
         newButton.innerHTML = e.name;
         javamonDiv.appendChild(newButton);
-        console.log(document.getElementsByTagName('button')[i]);
+        // console.log(document.getElementsByTagName('button')[i]);
     })
     // document.getElementById('play').className = 'display-none';
     // document.getElementsByTagName('h1')[0].className = 'display-none';
@@ -731,7 +819,7 @@ function chooseAction2(){
 
 // Function for when Next is clicked on the 'fight switch run' screen
 function pickEm(){
-    document.getElementById('next1').onclick = function(){
+    next1.onclick = function(){
         if (p1Click.length ===1 && p2Click.length === 1){
             deleteOptions();
             deleteNext(1);
@@ -780,7 +868,7 @@ function deleteInfo(){
 function deleteOptions(){
     p1Buttons = document.getElementsByClassName('p1-button');
     p2Buttons = document.getElementsByClassName('p2-button');
-    next = document.getElementById('next1');
+    // next = document.getElementById('next1');
     for (var i=0; i<p1Buttons.length; i++){
         p1Buttons[i].className = 'p1-button display-none';
         p2Buttons[i].className = 'p2-button display-none';
@@ -919,13 +1007,26 @@ function pickCurrent(pickedJavamon, num){
         }
         // Pushes move pressed into variable which will be used for fight
         button.onclick = function(e){
+            if (num == 1){
+                for (var i=0; i< party1.length; i++){
+                    party1[i].className = 'p1-button party1';
+                }
+            }
+            if (num == 2){
+                for (var i=0; i< party2.length; i++){
+                    party2[i].className = 'p2-button party2';
+                }
+            }
+
             player.forEach(function(i){
                 if (e.path[0].id === i.name && e.path[0].className === 'p1-button party1'){
                     current1 = i;
+                    e.path[0].className = 'p1-button party1 active';
                     // console.log(i)
                 }
                 else if (e.path[0].id === i.name && e.path[0].className === 'p2-button party2'){
                     current2 = i;
+                    e.path[0].className = 'p2-button party2 active';
                 }
             })
         //     console.log(current.moves)
@@ -960,7 +1061,7 @@ function Fight(){
     // if (current1Javamon)var move1 = current1Javamon.moves[Math.floor(Math.random()*4)];
     // if (current2Javamon)var move2 = current2Javamon.moves[Math.floor(Math.random()*4)];
     if (move1) var move1Speed = move1.speed;
-    if (move2) var move2Speed = move2.speed
+    if (move2) var move2Speed = move2.speed;
     if (move1 && move2){
         if (move1Speed > move2Speed){
             // Player one's move goes first and hits player 2's Javamon
