@@ -16,7 +16,8 @@ let player1Div = document.getElementsByClassName('player1')[0]
 let player2Div = document.getElementsByClassName('player2')[0]
 let player1Name = document.getElementById('player1-name');
 let player2Name = document.getElementById('player2-name');
-
+let audio = document.getElementsByTagName('audio')[0];
+let audioSource = document.getElementById('audio-source');
 
 // Array to automatically store all javamon
 var javamon = [];
@@ -192,9 +193,77 @@ function Background(name, src, floor){
     this.name = name;
     this.src = src;
     this.floor = floor;
+    background.push(this);
 }
 
 let greens = new Background('greens', '/images/greens.jpg', '/images/greens-floor.png')
+
+// Stores music for lobby to be picked at random
+let lobby = [];
+
+function Lobby(src){
+    this.src = src;
+    let lobbyAudio = new Audio(src);
+    this.lobbyAudio = lobbyAudio
+    lobby.push(this);
+}
+
+new Lobby('/sounds/lobby-music/battle-hall.mp3');
+new Lobby('/sounds/lobby-music/battle-tower-reception.mp3');
+new Lobby('/sounds/lobby-music/bills-origin.mp3');
+new Lobby('/sounds/lobby-music/celadon-city.mp3');
+new Lobby('/sounds/lobby-music/ending.mp3');
+new Lobby('/sounds/lobby-music/mt-moon-cave.mp3');
+new Lobby('/sounds/lobby-music/opening.mp3');
+new Lobby('/sounds/lobby-music/palette-town.mp3');
+new Lobby('/sounds/lobby-music/pokemon-center.mp3');
+new Lobby('/sounds/lobby-music/pokemon-gym.mp3');
+new Lobby('/sounds/lobby-music/pokemon-gym2.mp3');
+
+// Stores background music to be stored at random
+let backgroundSong = [];
+
+function pushMusic(all){
+    backgroundSong.push(all);
+}
+
+function BackgroundSong(name, backgroundSrc){
+    this.name = name;
+    this.backgroundSrc = backgroundSrc;
+    let backgroundSongAudio = new Audio(backgroundSrc);
+    this.backgroundSongAudio = backgroundSongAudio;
+    pushMusic(this);
+}
+
+let gymBattle = new BackgroundSong('Gym Battle', '/sounds/battle-music/yellow/gym-battle.mp3');
+let trainerBattle = new BackgroundSong('Trainer Battle', '/sounds/battle-music/yellow/trainer-battle.mp3');
+let wildBattle = new BackgroundSong('Wild Battle', '/sounds/battle-music/yellow/wild-battle.mp3')
+let championBattle = new BackgroundSong('Pearl Champion Battle', 'sounds/battle-music/pearl/champion-battle.mp3')
+let pearlWild = new BackgroundSong('Pearl Wild Battle', '/sounds/battle-music/pearl/wild-battle.mp3');
+let pearlTrainer = new BackgroundSong('Pearl Trainer Batlle', '/sounds/battle-music/pearl/trainer-battle.mp3');
+let pearlGym = new BackgroundSong('Pearl Gym Battle', '/sounds/battle-music/pearl/gym-battle.mp3');
+let pearlGalactic = new BackgroundSong('Pearl Galactic Battle', '/sounds/battle-music/pearl/galactic-battle.mp3');
+let pearlElite = new BackgroundSong('Pearl Elite Battle', '/sounds/battle-music/pearl/elite-battle.mp3');
+let heatgoldEntei = new BackgroundSong('HeartGold Entei Battle', '/sounds/battle-music/heartgold/entei-battle.mp3');
+
+// Stores victory songs to be picked at random
+let victorySong = [];
+
+function pushVictory(all){
+    victorySong.push(all)
+}
+
+function VictorySong(name, src){
+    this.name = src;
+    this.src = src;
+    let song = new Audio(src);
+    this.song = song;
+    pushVictory(this);
+}
+
+let gymVictory = new VictorySong('Gym Victory', '/sounds/victory-music/yellow/gym-victory.mp3');
+let trainerVictory = new VictorySong('Trainer Victory', '/sounds/victory-music/yellow/trainer-victory.mp3');
+let wildVictory = new VictorySong('Wild', '/sounds/victory-music/yellow/wild-victory.mp3');
 
 
 window.onload = function java(){
@@ -205,6 +274,7 @@ window.onload = function java(){
     playerPick(1);
     createButton();
     clickEm();
+    // randomLobbySong('play');
     // randomPick();
     // next.click();
 }
@@ -244,6 +314,30 @@ document.getElementById('next').onclick = function(){
     insertFloor();
     setBackground();
     playerChoose();
+    randomLobbySong('pause');
+    randomBackgroundSong('play');
+    }
+}
+
+// Random number for lobby songs
+randomLobby = Math.floor(Math.random()*lobby.length)
+
+// Random number for background and victory songs
+randomSongNum = Math.floor(Math.random()*backgroundSong.length)
+
+// Plays random lobby song every time page loads
+function randomLobbySong(play){
+    switch (play){
+        case 'play': lobby[randomLobby].lobbyAudio.play();
+        case 'pause': lobby[randomLobby].lobbyAudio.pause();
+    }
+}
+
+// Plays random background song each time you enter battle
+function randomBackgroundSong(play){
+    switch (play){
+        case 'play': backgroundSong[randomSongNum].backgroundSongAudio.play(); break;
+        case 'pause': backgroundSong[randomSongNum].backgroundSongAudio.pause(); break;
     }
 }
 
@@ -263,7 +357,8 @@ function playerChoose(){
                 // case 13: next1.click(); break;
             }
             switch (event.keyCode){
-                case 13: next1.click();
+                case 13: next1.click(); break;
+                case 32: next1.click(); break;
             }
             // Keyboard clicks for WASD
             switch (event.keyCode){
@@ -323,6 +418,12 @@ function playerChoose(){
                 return document.getElementsByClassName('p2-button')[i];
             }
         }
+        if (fight.className != 'display-none'){
+            switch (event.keyCode){
+                case 13: fight.click(); break;
+            }
+        }
+        
         if (move1.length > 3 || document.getElementsByClassName('move2').length > 3){
             // Keyboard clicks for arrow keys
             if (move2.length > 3){
@@ -331,7 +432,7 @@ function playerChoose(){
                     case 39: console.log(event.key, event.keyCode); chooseP2(1).click(); break;
                     case 40: console.log(event.key, event.keyCode); chooseP2(3).click(); break;
                     case 37: console.log(event.key, event.keyCode); chooseP2(0).click(); break;
-                    case 13: fight.click(); break;
+                    // case 13: fight.click(); break;
                 }
             }
             
@@ -342,7 +443,7 @@ function playerChoose(){
                     case 68: console.log(event.key, event.keyCode); chooseP1(1).click(); break;
                     case 83: console.log(event.key, event.keyCode); chooseP1(3).click(); break;
                     case 65: console.log(event.key, event.keyCode); chooseP1(0).click(); break;
-                    case 13: fight.click(); break;
+                    // case 13: fight.click(); break;
                 }
             }
             
@@ -402,9 +503,9 @@ function playerChoose(){
                     // case 13: fight.click(); break;
                 }
             }
-            switch (event.keyCode){
-                case 13: fight.click(); break;
-            }
+            // switch (event.keyCode){
+            //     case 13: fight.click(); break;
+            // }
             
             // Keyboard clicks for WASD
             if (party1.length > 0){
@@ -419,7 +520,7 @@ function playerChoose(){
             
             function chooseP1(nu){
                 if (nu == 1){
-                    if (e<3){
+                    if (e<(party1.length-1)){
                         e++;
                     }
                     else {
@@ -431,18 +532,18 @@ function playerChoose(){
                         e--;
                     }
                     else {
-                        e=3;
+                        e=(party1.length-1);
                     }
                 }
                 if (nu == 3){
-                    e = 3;
+                    e = (party1.length-1);
                 }
                 return party1[e];
                 // console.log(party1[e]);
             }
             function chooseP2(nu){
                 if (nu == 1){
-                    if (i<3){
+                    if (i<(party2.length-1)){
                         i++;
                     }
                     else {
@@ -454,11 +555,11 @@ function playerChoose(){
                         i--;
                     }
                     else {
-                        i=3;
+                        i=party2.length-1;
                     }
                 }
                 if (nu == 3){
-                    i = 3;
+                    i = party2.length-1;
                 }
                 return party2[i];
             }
@@ -1080,12 +1181,12 @@ function Fight(){
                     console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
                     updateHealth(1);
                     if (current1Javamon.health <= 0){
-                        current1Dead();
+                        current1Dead(0);
                     }
                 }, 1000)
             } else if (current2Javamon.health <= 0){
                 // updateHealth(4);
-                current2Dead();
+                current2Dead(0);
             }
             // console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
             // console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
@@ -1112,37 +1213,11 @@ function Fight(){
                     console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
                     updateHealth(2);
                     if (current2Javamon.health <= 0){
-                        current2Dead();
+                        current2Dead(0);
                     }
                 }, 1000)
             } else if (current1Javamon.health <= 0){
-                current1Dead();
-            }
-        }
-
-        function current1Dead(){
-            console.log(current1Javamon.name + ' has fainted!');
-            player1Javamon.splice(player1Javamon.indexOf(current1Javamon), 1);
-            // console.log(player1Javamon[Math.floor(Math.random()*player1Javamon.length)])
-            current1Javamon = player1Javamon[Math.floor(Math.random()*player1Javamon.length)];
-            showJavamon(current1Javamon, current2Javamon);
-            updateHealth(1);
-            if (player1Javamon.length!=0){
-                console.log(current1Javamon.name + ' to the rescue!');
-                console.log('')
-            }
-        }
-            
-        function current2Dead(){
-            console.log(current2Javamon.name + ' has fainted!');
-            player2Javamon.splice(player2Javamon.indexOf(current2Javamon), 1);
-            // console.log(player2Javamon[Math.floor(Math.random()*player2Javamon.length)])
-            current2Javamon = player2Javamon[Math.floor(Math.random()*player2Javamon.length)];
-            showJavamon(current1Javamon, current2Javamon);
-            updateHealth(2);
-            if (player2Javamon.length!=0){
-                console.log(current2Javamon.name + ' to the rescue!');
-                console.log('')
+                current1Dead(0);
             }
         }
             
@@ -1161,7 +1236,7 @@ function Fight(){
         if (current2Javamon.health <= 0){
             current2Dead();
         }
-        showJavamon(current1Javamon, current2Javamon);
+        setTimeout(showJavamon(current1Javamon, current2Javamon), 1000);
     }
     if (move1 === null && move2){
         current1Javamon.health -= Math.floor(move2.power/3);
@@ -1172,8 +1247,37 @@ function Fight(){
         if (current1Javamon.health <= 0){
             current1Dead();
         }
-        showJavamon(current1Javamon, current2Javamon);
+        setTimeout(showJavamon(current1Javamon, current2Javamon), 1000);
     }
+
+    function current1Dead(num){
+        console.log(current1Javamon.name + ' has fainted!');
+        player1Javamon.splice(player1Javamon.indexOf(current1Javamon), 1);
+        // console.log(player1Javamon[Math.floor(Math.random()*player1Javamon.length)])
+        if (num == 0)
+        current1Javamon = player1Javamon[Math.floor(Math.random()*player1Javamon.length)];
+        showJavamon(current1Javamon, current2Javamon);
+        updateHealth(1);
+        if (player1Javamon.length!=0){
+            console.log(current1Javamon.name + ' to the rescue!');
+            console.log('')
+        }
+    }
+        
+    function current2Dead(num){
+        console.log(current2Javamon.name + ' has fainted!');
+        player2Javamon.splice(player2Javamon.indexOf(current2Javamon), 1);
+        // console.log(player2Javamon[Math.floor(Math.random()*player2Javamon.length)])
+        if (num == 0)
+        current2Javamon = player2Javamon[Math.floor(Math.random()*player2Javamon.length)];
+        showJavamon(current1Javamon, current2Javamon);
+        updateHealth(2);
+        if (player2Javamon.length!=0){
+            console.log(current2Javamon.name + ' to the rescue!');
+            console.log('')
+        }
+    }
+
     if (player1Javamon.length === 0){
         console.log('Player 1 has no more Javamon!')
         console.log('Player 2 has won!')
@@ -1196,7 +1300,8 @@ function Fight(){
     if (current2)current2Javamon = current2;
     if (player1Move) player1Move = null;
     if (player2Move) player2Move = null;
-    showJavamon(current1Javamon, current2Javamon);
+    setTimeout(showJavamon(current1Javamon, current2Javamon), 10000);
+    // showJavamon(current1Javamon, current2Javamon);
     changeHealth();
 }
 
