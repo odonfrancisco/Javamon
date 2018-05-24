@@ -18,6 +18,9 @@ let player1Name = document.getElementById('player1-name');
 let player2Name = document.getElementById('player2-name');
 let audio = document.getElementsByTagName('audio')[0];
 let audioSource = document.getElementById('audio-source');
+let player1Party = document.getElementById('player1-party');
+let player2Party = document.getElementById('player2-party');
+
 
 // Array to automatically store all javamon
 var javamon = [];
@@ -244,7 +247,31 @@ let pearlTrainer = new BackgroundSong('Pearl Trainer Batlle', '/sounds/battle-mu
 let pearlGym = new BackgroundSong('Pearl Gym Battle', '/sounds/battle-music/pearl/gym-battle.mp3');
 let pearlGalactic = new BackgroundSong('Pearl Galactic Battle', '/sounds/battle-music/pearl/galactic-battle.mp3');
 let pearlElite = new BackgroundSong('Pearl Elite Battle', '/sounds/battle-music/pearl/elite-battle.mp3');
-let heatgoldEntei = new BackgroundSong('HeartGold Entei Battle', '/sounds/battle-music/heartgold/entei-battle.mp3');
+let heartgoldEntei = new BackgroundSong('HeartGold Entei Battle', '/sounds/battle-music/heartgold/entei-battle.mp3');
+
+// Array which stores all move sounds
+let moveSound = [];
+
+function MoveSound(src){
+    this.src = src;
+    let moveAudio = new Audio(src);
+    this.moveAudio = moveAudio;
+    moveSound.push(this);
+}
+
+let moveSound1 = new MoveSound('/sounds/moves/move1.mp3');
+let moveSound10 = new MoveSound('/sounds/moves/move10.mp3');
+let moveSound11 = new MoveSound('/sounds/moves/move11.mp3');
+let moveSound12 = new MoveSound('/sounds/moves/move12.mp3');
+let moveSound2 = new MoveSound('/sounds/moves/move2.mp3');
+let moveSound3 = new MoveSound('/sounds/moves/move3.mp3');
+let moveSound4 = new MoveSound('/sounds/moves/move4.mp3');
+let moveSound5 = new MoveSound('/sounds/moves/move5.mp3');
+let moveSound6 = new MoveSound('/sounds/moves/move6.mp3');
+let moveSound7 = new MoveSound('/sounds/moves/move7.mp3');
+let moveSound8 = new MoveSound('/sounds/moves/move8.mp3');
+let moveSound9 = new MoveSound('/sounds/moves/move9.mp3');
+
 
 // Stores victory songs to be picked at random
 let victorySong = [];
@@ -316,6 +343,7 @@ document.getElementById('next').onclick = function(){
     playerChoose();
     randomLobbySong('pause');
     randomBackgroundSong('play');
+    // enterButton();
     }
 }
 
@@ -341,6 +369,19 @@ function randomBackgroundSong(play){
     }
 }
 
+
+function enterButton(){
+    document.onkeydown = function(event){
+        if (document.getElementsByClassName('p2-button')[0].className.indexOf('display-none') == -1){
+            switch(event.keyCode){
+                case 13: next1.click(); break;
+            }
+        };
+    }
+}
+
+
+
 i = 0;
 e = 0;
 function playerChoose(){
@@ -357,7 +398,7 @@ function playerChoose(){
                 // case 13: next1.click(); break;
             }
             switch (event.keyCode){
-                case 13: next1.click(); break;
+                // case 13: next1.click(); break;
                 case 32: next1.click(); break;
             }
             // Keyboard clicks for WASD
@@ -638,32 +679,54 @@ function clickEm(){
     }
 }
 
+function createListItem(name, num){
+    let li = document.createElement('li');
+    let img = document.createElement('img');
+    li.appendChild(img);
+    img.src = name;
+    // li.innerHTML = name
+    switch (num){
+        case 1: player1Party.querySelector('ul').appendChild(li); break;
+        case 2: player2Party.querySelector('ul').appendChild(li); break;
+    }
+}
+
 // Function which ensures P1 goes first in choosing Javamon and then P2
 function pickJavamon(e){
     if (player1Javamon.length < 4){
         javamon.forEach(function(i){
+            f = 0
             if (e.id === i.name){
-                player1Javamon.push(i)
-                // console.log(player1Javamon)
+                f = []
+                f.push(new Javamon(i.name, i.type, i.sprite1, i.sprite2))
+                player1Javamon.push(f[0]);
+                createListItem(i.sprite2, 1);
+                // console.log(player1Javamon);
+                // console.log(f);
+                // console.log(i.type);
                 e.className = 'javamon-button active'
+                console.log(f[0]);
+                // console.log(e.className);
             }
         })
         if (player1Javamon.length == 4){
             playerPick(2);
-            for (var i=0; i<4; i++){
+            for (var i=0; i<e.parentNode.getElementsByClassName('javamon-button active').length; i++){
                 e.parentNode.getElementsByClassName('javamon-button active')[0].className = 'javamon-button';
             }
         }
     } else if(player2Javamon.length < 4) {
         javamon.forEach(function(i){
             if (e.id === i.name){
-                player2Javamon.push(i)
+                f = new Javamon(i.name, i.type, i.sprite1, i.sprite2);
+                player2Javamon.push(f)
+                createListItem(i.sprite2, 2);
                 // console.log(player2Javamon)
                 e.className = 'javamon-button active'
             }
         })
         if (player2Javamon.length == 4){
-            for (var i=0; i<4; i++){
+            for (var i=0; i<e.parentNode.getElementsByClassName('javamon-button active').length; i++){
                 e.parentNode.getElementsByClassName('javamon-button active')[0].className = 'javamon-button';
             }
             h1.innerHTML = 'Ready!';
@@ -1171,6 +1234,7 @@ function Fight(){
             console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
             console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
             console.log('');
+            playRandomMoveSound();
             updateHealth(2);
             // Makes sure second player can't hit if their health is 0 or less
             if (current2Javamon.health > 0){
@@ -1179,6 +1243,7 @@ function Fight(){
                     animatePlayer(2);
                     console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
                     console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+                    playRandomMoveSound();
                     updateHealth(1);
                     if (current1Javamon.health <= 0){
                         current1Dead(0);
@@ -1203,7 +1268,8 @@ function Fight(){
             animatePlayer(2);
             console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
             console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
-            console.log('')
+            console.log('');
+            playRandomMoveSound();
             updateHealth(1);
             if (current1Javamon.health > 0){
                 setTimeout(function(){
@@ -1211,6 +1277,7 @@ function Fight(){
                     animatePlayer(1);
                     console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
                     console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+                    playRandomMoveSound();
                     updateHealth(2);
                     if (current2Javamon.health <= 0){
                         current2Dead(0);
@@ -1230,24 +1297,26 @@ function Fight(){
     if (move2 === null && move1){
         current2Javamon.health -= Math.floor(move1.power/3);
         animatePlayer(1);
-            console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
-            console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
-            console.log('');
+        console.log('Player1\'s ' + current1Javamon.name + ' used ' + move1.name + ' on ' + current2Javamon.name + '!');
+        console.log('Player2\'s ' + current2Javamon.name + '\'s health has been reduced to ' + current2Javamon.health);
+        console.log('');
+        playRandomMoveSound();
         if (current2Javamon.health <= 0){
             current2Dead();
         }
-        setTimeout(showJavamon(current1Javamon, current2Javamon), 1000);
+        // setTimeout(function(){showJavamon(current1Javamon, current2Javamon)}, 2000);
     }
     if (move1 === null && move2){
         current1Javamon.health -= Math.floor(move2.power/3);
         animatePlayer(2);
-            console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
-            console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
-            console.log('')
+        console.log('Player2\'s ' + current2Javamon.name + ' used ' + move2.name + ' on ' + current1Javamon.name + '!');
+        console.log('Player1\'s ' + current1Javamon.name + '\'s health has been reduced to ' + current1Javamon.health);
+        console.log('');
+        playRandomMoveSound();
         if (current1Javamon.health <= 0){
             current1Dead();
         }
-        setTimeout(showJavamon(current1Javamon, current2Javamon), 1000);
+        // setTimeout(function(){showJavamon(current1Javamon, current2Javamon)}, 2000);
     }
 
     function current1Dead(num){
@@ -1300,8 +1369,8 @@ function Fight(){
     if (current2)current2Javamon = current2;
     if (player1Move) player1Move = null;
     if (player2Move) player2Move = null;
-    setTimeout(showJavamon(current1Javamon, current2Javamon), 10000);
-    // showJavamon(current1Javamon, current2Javamon);
+    // setTimeout(function(){showJavamon(current1Javamon, current2Javamon)}, 1200);
+    showJavamon(current1Javamon, current2Javamon);
     changeHealth();
 }
 
@@ -1366,6 +1435,10 @@ function animatePlayer(num){
     }, 3000)
 }
 
+// Pl
+function playRandomMoveSound(){
+    moveSound[Math.floor(Math.random()*moveSound.length)].moveAudio.play();
+}
 // document.addEventListener('keydown', (event) => {
 //     this.keyName = event.keyCode;
 //     // console.log(keyName + event.keyCode);

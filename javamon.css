@@ -57,8 +57,39 @@ h1{
     justify-content: center; 
 }
 
+#players-party{
+    /* background-color: red; */
+    column-count: 2;
+}
+
+#player1-party, #player2-party{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    break-after: column;
+}
+
+#player1-party > h3, #player2-party > h3{
+    margin: 0;
+}
+
+#ul{
+    position: relative;
+    /* right: 40px; */
+    /* display: flex; */
+    /* flex: column wrap; */
+}
+
+ul{
+    display: flex;
+    align-items: flex-end;
+    list-style-type: none;
+}
+
 #next-div{
     display: flex;
+    flex: row wrap;
     justify-content: center;
 }
 
