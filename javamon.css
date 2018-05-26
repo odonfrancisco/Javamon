@@ -8,6 +8,15 @@ head, body, html{
     height: 40vw;
 }
 
+#intro h1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#intro p{
+    margin-left: 30px;
+}
+
 /* .javamon-button:first-of-type{
     margin-top: 50px;
 } */
@@ -28,7 +37,7 @@ h1{
     display: none;
 }
 
-#next, #next1, #fight{
+#next, #next1, #fight, #next2{
     margin-top: 50px;
 }
 /* Weird that this doesn't work*/
@@ -240,7 +249,7 @@ ul{
 #health2-div{
     width: 49.9vw;
 }
-#next1, #fight{
+#next1, #fight, #next2, #play{
     width: 100%;
     height: 40px;
     border-radius: 40px;
@@ -255,4 +264,14 @@ img{
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+}
+
+#partyDiv, #winners-circle{
+    display: flex;
+    justify-content: center;
+    color: white;
+    align-items: center;
+}
+#partyDiv{
+    margin-top: 150px;
 }

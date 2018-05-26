@@ -8,12 +8,14 @@
     <title>Gotta code 'em all!</title>
 </head>
 <body>
-    <!-- <h1>Welcome to Javamon!</h1>
-    <p>Think of Pokemon. Now think of Javamon. If you thought of the same thing both times, you're right!<br>
-        <br>
-        Javamon will take you through the fight scene of of Pokemon. You'll pick your Javamon and engage in battle!</p>
-    <button id="play">Play</button> -->
-
+    <div id="intro">
+        <div><h1>Welcome to Javamon!</h1></div>
+        <div><p>Think of Pokemon. Now think of Javamon. If you thought of the same thing both times, you're right!<br>
+            <br>
+            Javamon will take you through the fight scene of of Pokemon. You'll pick your Javamon and engage in battle!</p>
+            </div>
+        <div><button id="play">Play</button></div>
+    </div>
     <canvas id="canvas" class="display-none"></canvas>
 
     <div id="after-canvas" class="display-none"></div>
@@ -46,9 +48,10 @@
         <div id="column1"></div>
         <div id="column2"></div>
     </div>
-    <div id="next-div"><button id="next">Next</button></div>
+    <div id="next-div"><button id="next" class="display-none">Next</button></div>
 
     <div><button id="fight" class="display-none">Fight!</button></div>
+    <div><button id="next2" class="display-none">Play!</button></div>
 <script src="javamon.js"></script>
 </body>
 </html>
